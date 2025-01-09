@@ -13,12 +13,18 @@
         android:theme="@style/Theme.JavaQuiz"
         tools:targetApi="31">
         <activity
+            android:name=".LevelSelectionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PracticeModeActivity"
+            android:exported="false" />
+        <activity
             android:name=".GameActivity"
             android:exported="false" />
         <activity
             android:name=".PlayerNamesActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustResize"/>
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".MultiplayerActivity"
             android:exported="false" />
