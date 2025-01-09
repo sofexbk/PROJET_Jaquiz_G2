@@ -1,0 +1,139 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@drawable/home_background">
+
+
+
+    <!-- CardView for Input Fields -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="8dp"
+        app:cardBackgroundColor="#ffffff">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/input_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Entrez les noms des joueurs"
+                    android:textSize="20sp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="20dp"
+                    android:textColor="#000000" />
+
+                <!-- Player 1 -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/player1_input_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Nom du Joueur 1"
+                    app:boxBackgroundMode="outline"
+                    app:boxStrokeColor="#0d47a1"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/player1_input"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="#000000"
+                        app:hintTextColor="#808080" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Player 2 -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/player2_input_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Nom du Joueur 2"
+                    app:boxBackgroundMode="outline"
+                    app:boxStrokeColor="#0d47a1"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/player2_input"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="#000000"
+                        app:hintTextColor="#808080" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Player 3 -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/player3_input_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Nom du Joueur 3"
+                    android:visibility="gone"
+                    app:boxBackgroundMode="outline"
+                    app:boxStrokeColor="#0d47a1"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/player3_input"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="#000000"
+                        app:hintTextColor="#808080" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Player 4 -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/player4_input_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Nom du Joueur 4"
+                    android:visibility="gone"
+                    app:boxBackgroundMode="outline"
+                    app:boxStrokeColor="#0d47a1"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/player4_input"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="#000000"
+                        app:hintTextColor="#808080" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+        </ScrollView>
+    </androidx.cardview.widget.CardView>
+
+    <Button
+        android:id="@+id/btn_start_game"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Commencer le jeu"
+        android:backgroundTint="#FFFFFF"
+        android:textColor="#000000"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="16dp" />
+</LinearLayout>

@@ -1,0 +1,285 @@
+{
+  "categories": {
+    "beginner": [
+      {
+        "id": 1,
+        "question": "Quelle est la taille d'un int en Java ?",
+        "options": ["4 octets", "2 octets", "8 octets", "Dépend du système"],
+        "answer": "4 octets",
+        "explanation": "En Java, un int fait toujours 4 octets, quel que soit le système."
+      },
+      {
+        "id": 2,
+        "question": "Quelle est la valeur par défaut d'un booléen en Java ?",
+        "options": ["true", "false", "null", "0"],
+        "answer": "false",
+        "explanation": "La valeur par défaut d'un champ booléen en Java est false."
+      },
+      {
+        "id": 3,
+        "question": "Que signifie JVM ?",
+        "options": ["Java Virtual Machine", "Java Verified Machine", "Java Virtual Model", "Java Value Manager"],
+        "answer": "Java Virtual Machine",
+        "explanation": "JVM signifie Java Virtual Machine et est responsable de l'exécution des programmes Java."
+      },
+      {
+        "id": 4,
+        "question": "Quel mot-clé est utilisé pour créer un objet en Java ?",
+        "options": ["new", "class", "object", "create"],
+        "answer": "new",
+        "explanation": "Le mot-clé 'new' est utilisé pour créer des objets en Java."
+      },
+      {
+        "id": 5,
+        "question": "Java est-il un langage compilé ou interprété ?",
+        "options": ["Compilé", "Interprété", "Les deux", "Aucun"],
+        "answer": "Les deux",
+        "explanation": "Java est d'abord compilé en bytecode puis interprété par la JVM."
+      },
+      {
+        "id": 6,
+        "question": "Quel est le type de retour d'une méthode main en Java ?",
+        "options": ["void", "int", "string", "char"],
+        "answer": "void",
+        "explanation": "La méthode main a le type de retour 'void' car elle ne retourne rien."
+      },
+      {
+        "id": 7,
+        "question": "Que signifie 'null' en Java ?",
+        "options": ["Aucune valeur", "0", "Valeur par défaut", "Erreur"],
+        "answer": "Aucune valeur",
+        "explanation": "'null' signifie qu'une variable ne fait référence à aucun objet."
+      },
+      {
+        "id": 8,
+        "question": "Quelle méthode est utilisée pour afficher du texte en Java ?",
+        "options": ["System.out.println()", "print()", "cout<<", "echo()"],
+        "answer": "System.out.println()",
+        "explanation": "System.out.println() est utilisé pour afficher du texte dans la console en Java."
+      },
+      {
+        "id": 9,
+        "question": "Quel opérateur est utilisé pour tester l'égalité en Java ?",
+        "options": ["==", "=", "!=", "equals()"],
+        "answer": "==",
+        "explanation": "L'opérateur '==' est utilisé pour tester l'égalité en Java."
+      },
+      {
+        "id": 10,
+        "question": "Comment déclarer une constante en Java ?",
+        "options": ["final", "const", "static", "immutable"],
+        "answer": "final",
+        "explanation": "Le mot-clé 'final' est utilisé pour déclarer des constantes en Java."
+      }
+    ],
+    "intermediate": [
+      {
+        "id": 1,
+        "question": "Quel est l'objectif du mot-clé 'final' en Java ?",
+        "options": [
+          "Empêcher l'héritage",
+          "Permettre l'héritage multiple",
+          "Déclarer une constante",
+          "Empêcher l'héritage et déclarer une constante"
+        ],
+        "answer": "Empêcher l'héritage et déclarer une constante",
+        "explanation": "Le mot-clé 'final' empêche l'héritage (pour les classes) et peut être utilisé pour déclarer des constantes (pour les variables)."
+      },
+      {
+        "id": 2,
+        "question": "Laquelle de ces exceptions est une exception vérifiée ?",
+        "options": [
+          "NullPointerException",
+          "IOException",
+          "ArithmeticException",
+          "ArrayIndexOutOfBoundsException"
+        ],
+        "answer": "IOException",
+        "explanation": "Les exceptions vérifiées comme IOException doivent être déclarées dans la clause throws d'une méthode."
+      },
+      {
+        "id": 3,
+        "question": "Quel est l'opérateur de division en Java ?",
+        "options": ["%", "/", "*", "//"],
+        "answer": "/",
+        "explanation": "L'opérateur '/' est utilisé pour la division en Java."
+      },
+      {
+        "id": 4,
+        "question": "Quelle méthode est utilisée pour démarrer un thread en Java ?",
+        "options": ["start()", "run()", "execute()", "begin()"],
+        "answer": "start()",
+        "explanation": "La méthode 'start()' démarre un thread en appelant sa méthode 'run()'."
+      },
+      {
+        "id": 5,
+        "question": "Quel est le type d'une méthode qui ne retourne rien ?",
+        "options": ["void", "null", "empty", "None"],
+        "answer": "void",
+        "explanation": "Une méthode qui ne retourne rien est déclarée avec le type 'void'."
+      },
+      {
+        "id": 6,
+        "question": "Quelle est la portée d'une variable déclarée dans une méthode ?",
+        "options": [
+          "Locale",
+          "Globale",
+          "Statique",
+          "Dynamique"
+        ],
+        "answer": "Locale",
+        "explanation": "Les variables déclarées dans une méthode ont une portée locale."
+      },
+      {
+        "id": 7,
+        "question": "Quelle interface Java est utilisée pour trier des objets ?",
+        "options": ["Comparable", "Comparator", "Serializable", "Runnable"],
+        "answer": "Comparable",
+        "explanation": "L'interface 'Comparable' est utilisée pour définir l'ordre naturel des objets."
+      },
+      {
+        "id": 8,
+        "question": "Quel package contient les classes de collection en Java ?",
+        "options": ["java.util", "java.lang", "java.io", "java.net"],
+        "answer": "java.util",
+        "explanation": "Les classes de collection comme ArrayList et HashMap sont dans le package 'java.util'."
+      },
+      {
+        "id": 9,
+        "question": "Que retourne la méthode 'hashCode()' ?",
+        "options": ["Un entier", "Un objet", "Un boolean", "Une chaîne"],
+        "answer": "Un entier",
+        "explanation": "La méthode 'hashCode()' retourne un entier représentant le code de hachage de l'objet."
+      },
+      {
+        "id": 10,
+        "question": "Quel est le mot-clé utilisé pour gérer les exceptions ?",
+        "options": ["try", "catch", "throw", "Tous les trois"],
+        "answer": "Tous les trois",
+        "explanation": "Les mots-clés 'try', 'catch' et 'throw' sont tous utilisés pour gérer les exceptions en Java."
+      }
+    ],
+    "advanced": [
+      {
+        "id": 1,
+        "question": "Quelle est la différence entre 'wait()' et 'sleep()' en Java ?",
+        "options": [
+          "'wait()' libère le verrou tandis que 'sleep()' ne le fait pas.",
+          "'sleep()' libère le verrou tandis que 'wait()' ne le fait pas.",
+          "Les deux libèrent le verrou.",
+          "Aucun ne libère le verrou."
+        ],
+        "answer": "'wait()' libère le verrou tandis que 'sleep()' ne le fait pas.",
+        "explanation": "'wait()' est utilisé pour la communication entre threads et libère le verrou sur l'objet, tandis que 'sleep()' met en pause l'exécution du thread sans libérer le verrou."
+      },
+      {
+        "id": 2,
+        "question": "Laquelle de ces interfaces n'est pas une interface fonctionnelle en Java ?",
+        "options": [
+          "Runnable",
+          "Callable",
+          "Serializable",
+          "Comparator"
+        ],
+        "answer": "Serializable",
+        "explanation": "Serializable est une interface marquée et n'a aucune méthode abstraite."
+      },
+      {
+        "id": 3,
+        "question": "Qu'est-ce que le polymorphisme en Java ?",
+        "options": [
+          "La capacité de prendre plusieurs formes",
+          "La création de plusieurs classes",
+          "L'utilisation de plusieurs threads",
+          "La surcharge des opérateurs"
+        ],
+        "answer": "La capacité de prendre plusieurs formes",
+        "explanation": "Le polymorphisme permet aux objets de prendre différentes formes, principalement avec les classes parents et enfants."
+      },
+      {
+        "id": 4,
+        "question": "Quel est le rôle du garbage collector en Java ?",
+        "options": [
+          "Gérer la mémoire en libérant les objets inutilisés",
+          "Compiler le code source",
+          "Créer de nouveaux objets",
+          "Exécuter les threads"
+        ],
+        "answer": "Gérer la mémoire en libérant les objets inutilisés",
+        "explanation": "Le garbage collector en Java libère automatiquement la mémoire occupée par les objets inutilisés."
+      },
+      {
+        "id": 5,
+        "question": "Quelle classe est utilisée pour lire les données d'un fichier en Java ?",
+        "options": [
+          "FileReader",
+          "FileInputStream",
+          "BufferedReader",
+          "Toutes les réponses ci-dessus"
+        ],
+        "answer": "Toutes les réponses ci-dessus",
+        "explanation": "FileReader, FileInputStream et BufferedReader peuvent toutes être utilisées pour lire des données, selon le contexte."
+      },
+      {
+        "id": 6,
+        "question": "Quel est le type de retour de la méthode 'getClass()' en Java ?",
+        "options": [
+          "Class<?>",
+          "String",
+          "Object",
+          "void"
+        ],
+        "answer": "Class<?>",
+        "explanation": "La méthode 'getClass()' retourne une instance de la classe Class<?> représentant la classe de l'objet."
+      },
+      {
+        "id": 7,
+        "question": "Comment synchroniser une méthode en Java ?",
+        "options": [
+          "En utilisant le mot-clé synchronized",
+          "En utilisant le mot-clé volatile",
+          "En utilisant le mot-clé static",
+          "En utilisant le mot-clé transient"
+        ],
+        "answer": "En utilisant le mot-clé synchronized",
+        "explanation": "Le mot-clé 'synchronized' garantit que la méthode est accessible par un seul thread à la fois."
+      },
+      {
+        "id": 8,
+        "question": "Que fait le mot-clé 'transient' en Java ?",
+        "options": [
+          "Empêche la sérialisation d'un champ",
+          "Marque un champ comme constant",
+          "Indique une méthode obsolète",
+          "Aucune des réponses ci-dessus"
+        ],
+        "answer": "Empêche la sérialisation d'un champ",
+        "explanation": "Le mot-clé 'transient' exclut un champ de la sérialisation lorsqu'un objet est converti en bytecode."
+      },
+      {
+        "id": 9,
+        "question": "Quelle classe est utilisée pour créer des threads en Java ?",
+        "options": [
+          "Thread",
+          "Runnable",
+          "ExecutorService",
+          "Toutes les réponses ci-dessus"
+        ],
+        "answer": "Toutes les réponses ci-dessus",
+        "explanation": "La classe Thread et les interfaces Runnable et ExecutorService peuvent être utilisées pour gérer des threads en Java."
+      },
+      {
+        "id": 10,
+        "question": "Que fait la méthode 'notify()' en Java ?",
+        "options": [
+          "Réveille un thread en attente sur l'objet moniteur",
+          "Met un thread en sommeil",
+          "Crée un thread",
+          "Stoppe un thread"
+        ],
+        "answer": "Réveille un thread en attente sur l'objet moniteur",
+        "explanation": "La méthode 'notify()' réveille un thread qui est en état d'attente sur l'objet moniteur."
+      }
+    ]
+  }
+}
