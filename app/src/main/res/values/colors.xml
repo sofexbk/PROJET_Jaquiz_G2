@@ -9,4 +9,5 @@
     <color name="card_background">#FFFFFF</color>
     <color name="option_border">#CCCCCC</color>
     <color name="primary_text">#333333</color>
+    <color name="primary_color">#3F51B5</color>
 </resources>
