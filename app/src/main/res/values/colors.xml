@@ -5,9 +5,10 @@
     <color name="white">#FFFFFFFF</color>
     <color name="primaryColor">#0d47a1</color>
     <color name="hintColor">#808080</color>
-    <color name="explanation_text">#D32F2F</color>
+    <color name="explanation_text">#1D67AF</color>
     <color name="card_background">#FFFFFF</color>
     <color name="option_border">#CCCCCC</color>
     <color name="primary_text">#333333</color>
     <color name="primary_color">#3F51B5</color>
+    <color name="off_white">#F8F8F8</color>
 </resources>

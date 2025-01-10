@@ -23,5 +23,11 @@ public class HomeActivity extends AppCompatActivity {
             startActivity(intent);
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         });
+
+        findViewById(R.id.card_progression).setOnClickListener(v -> {
+            Intent intent = new Intent(HomeActivity.this, ProgressionActivity.class);
+            startActivity(intent);
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        });
     }
 }

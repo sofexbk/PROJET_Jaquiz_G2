@@ -93,4 +93,41 @@
                 android:fontFamily="sans-serif" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
+
+    <!-- Progression Card -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_progression"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:layout_below="@id/card_multiplayer"
+        app:cardElevation="6dp"
+        app:cardBackgroundColor="#ffffff"
+        app:cardCornerRadius="16dp"
+        android:radius="12dp"
+        android:foreground="?attr/selectableItemBackground">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:contentDescription="Progression Icon"
+                android:src="@drawable/progresion" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Progression"
+                android:textSize="18sp"
+                android:textColor="#000000"
+                android:layout_marginStart="16dp"
+                android:fontFamily="sans-serif" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 </RelativeLayout>

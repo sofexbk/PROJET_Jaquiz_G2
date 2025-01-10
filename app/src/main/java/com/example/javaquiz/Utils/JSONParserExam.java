@@ -1,46 +1,51 @@
 package com.example.javaquiz.Utils;
 
 import com.example.javaquiz.Models.Question;
+import com.example.javaquiz.Models.QuestionExam;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class JSONParser {
+public class JSONParserExam {
 
-    public static List<Question> parseQuestions(String jsonString, String category) {
-        List<Question> questions = new ArrayList<>();
+    public static List<QuestionExam> parseQuestions(String jsonString, String difficulty) {
+        List<QuestionExam> questions = new ArrayList<>();
 
         try {
-            JSONObject root = new JSONObject(jsonString);
-            JSONObject categories = root.getJSONObject("categories");
-            JSONArray categoryArray = categories.getJSONArray(category);
+            // Parser le JSON
+            JSONArray questionsArray = new JSONArray(jsonString);
 
-            for (int i = 0; i < categoryArray.length(); i++) {
-                JSONObject questionObject = categoryArray.getJSONObject(i);
+            for (int i = 0; i < questionsArray.length(); i++) {
+                JSONObject questionObject = questionsArray.getJSONObject(i);
 
-                int id = questionObject.getInt("id");
+                // Récupérer les informations nécessaires
                 String questionText = questionObject.getString("question");
                 JSONArray optionsArray = questionObject.getJSONArray("options");
                 String[] options = new String[optionsArray.length()];
-
                 for (int j = 0; j < optionsArray.length(); j++) {
                     options[j] = optionsArray.getString(j);
                 }
+                String correctAnswer = questionObject.getString("answer");
+                String category = questionObject.getString("category");
+                String difficultyLevel = questionObject.getString("difficulty");
 
-                String answer = questionObject.getString("answer");
-                String explanation = questionObject.getString("explanation");
+                // Créer l'objet QuestionExam
+                QuestionExam question = new QuestionExam(questionText, options, correctAnswer, category, difficultyLevel);
 
-                Question question = new Question(id,questionText, options, answer, explanation);
-                questions.add(question);
+                // Ajouter à la liste
+                if (difficulty == null || difficultyLevel.equalsIgnoreCase(difficulty)) {
+                    questions.add(question);
+                }
             }
-
-        } catch (Exception e) {
+        } catch (JSONException e) {
             e.printStackTrace();
         }
 
         return questions;
     }
 }
+

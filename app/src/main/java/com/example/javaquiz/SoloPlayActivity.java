@@ -21,9 +21,9 @@ public class SoloPlayActivity extends AppCompatActivity {
         });
 
         findViewById(R.id.card_exam_mode).setOnClickListener(v -> {
-//            Intent intent = new Intent(SoloPlayActivity.this, ExamModeActivity.class);
-//            startActivity(intent);
-//            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+            Intent intent = new Intent(SoloPlayActivity.this, ExamModeActivity.class);
+            startActivity(intent);
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         });
     }
 }

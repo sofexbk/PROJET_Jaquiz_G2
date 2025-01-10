@@ -1,5 +1,6 @@
 package com.example.javaquiz;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -35,6 +36,7 @@ public class LevelSelectionActivity extends AppCompatActivity {
                 intent.putExtra("LEVEL", level);
                 startActivity(intent);
                 finish();  // Optional: Finish LevelSelectionActivity so user can't go back
+
             }
         };
 
@@ -42,5 +44,13 @@ public class LevelSelectionActivity extends AppCompatActivity {
         btnBeginner.setOnClickListener(levelClickListener);
         btnIntermediate.setOnClickListener(levelClickListener);
         btnAdvanced.setOnClickListener(levelClickListener);
+        // Configuration du bouton "Retour"
+        Button btnBack = findViewById(R.id.botnBack);
+        btnBack.setOnClickListener(v -> {
+            // Naviguer vers HomeActivity
+            Intent intent = new Intent(LevelSelectionActivity.this, HomeActivity.class);
+            startActivity(intent);
+            finish();
+        });
     }
 }

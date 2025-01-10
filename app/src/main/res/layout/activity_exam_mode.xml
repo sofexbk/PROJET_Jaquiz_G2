@@ -7,4 +7,70 @@
     android:layout_height="match_parent"
     tools:context=".ExamModeActivity">
 
+    <!-- TextView pour afficher la question -->
+    <TextView
+        android:id="@+id/questionText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Question"
+        android:textSize="18sp"
+        android:textColor="@android:color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:padding="16dp"
+        android:gravity="center"/>
+
+    <!-- Layout pour les options -->
+    <LinearLayout
+        android:id="@+id/optionsLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/questionText"/>
+
+    <!-- TextView pour afficher le chronomètre -->
+    <TextView
+        android:id="@+id/timerText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Temps restant : 10s"
+        android:textSize="16sp"
+        android:textColor="@android:color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/optionsLayout"
+        android:padding="8dp"
+        android:gravity="center"/>
+
+    <!-- TextView pour afficher le score final -->
+    <TextView
+        android:id="@+id/scoreText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Score final: 0"
+        android:textSize="20sp"
+        android:textColor="@android:color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:visibility="gone"
+        android:gravity="center"/>
+
+    <!-- Button pour retourner à l'accueil -->
+    <Button
+        android:id="@+id/btnReturnHome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Retour à l'accueil"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:visibility="gone"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
