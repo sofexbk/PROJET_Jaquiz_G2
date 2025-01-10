@@ -1,5 +1,6 @@
 package com.example.javaquiz;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -24,6 +25,14 @@ public class SoloPlayActivity extends AppCompatActivity {
             Intent intent = new Intent(SoloPlayActivity.this, ExamModeActivity.class);
             startActivity(intent);
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        });
+        // Configuration du bouton "Retour"
+        Button btnBack = findViewById(R.id.butnBack);
+        btnBack.setOnClickListener(v -> {
+            // Naviguer vers HomeActivity
+            Intent intent = new Intent(SoloPlayActivity.this, HomeActivity.class);
+            startActivity(intent);
+            finish();
         });
     }
 }

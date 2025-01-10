@@ -1,71 +1,66 @@
 package com.example.javaquiz;
 
 import android.content.Intent;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.javaquiz.Models.QuestionExam;
-import com.example.javaquiz.Utils.JSONParser;
 import com.example.javaquiz.Utils.JSONParserExam;
 import com.example.javaquiz.Utils.QuizDatabaseHelper;
 import com.example.javaquiz.Utils.loadQuizData;
-
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class ExamModeActivity extends AppCompatActivity {
-
     private TextView questionText, scoreText, timerText;
     private LinearLayout optionsLayout;
-
     private List<QuestionExam> questions;
-    private List<QuestionExam> selectedQuestions; // Liste des questions sélectionnées aléatoirement
+    private List<QuestionExam> selectedQuestions;
     private int currentQuestionIndex = 0;
     private int score = 0;
-    private int correctAnswers = 0; // Nombre de réponses correctes
-    private long startTime; // Pour mesurer le temps total
-    private int questionTimeLimit = 10; // Temps en secondes pour chaque question
+    private int correctAnswers = 0;
+    private long startTime;
+    private int questionTimeLimit = 10;
+    private CountDownTimer countDownTimer;
+    private boolean hasAnswered = false; // Track if the user has answered the current question
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exam_mode);
 
-        // Initialisation des vues
         questionText = findViewById(R.id.questionText);
         optionsLayout = findViewById(R.id.optionsLayout);
         scoreText = findViewById(R.id.scoreText);
-        timerText = findViewById(R.id.timerText);  // TextView pour afficher le timer
+        timerText = findViewById(R.id.timerText);
 
-        // Masquer le score au début
         scoreText.setVisibility(View.GONE);
 
-        // Charger les questions
         String jsonString = loadQuizData.readJsonFromRaw(this, R.raw.data);
         if (jsonString != null) {
-            questions = JSONParserExam.parseQuestions(jsonString, "beginner"); // Utilisez le niveau de difficulté ici si besoin
+            questions = JSONParserExam.parseQuestions(jsonString);
         }
 
-        // Mélanger les questions de manière aléatoire
         Collections.shuffle(questions);
 
-        // Sélectionner uniquement les 15 premières questions après avoir mélangé
-        selectedQuestions = questions.subList(0, Math.min(15, questions.size()));
+        selectedQuestions = new ArrayList<>();
+        int questionsToSelect = Math.min(15, questions.size());
+        for (int i = 0; i < questionsToSelect; i++) {
+            selectedQuestions.add(questions.get(i));
+        }
 
-        // Démarrer le chronométrage
         startTime = System.currentTimeMillis();
-
-        // Afficher la première question
         displayQuestion();
 
-        // Gestion du bouton de retour à l'accueil
         findViewById(R.id.btnReturnHome).setOnClickListener(v -> {
             Intent intent = new Intent(ExamModeActivity.this, HomeActivity.class);
             startActivity(intent);
@@ -74,47 +69,121 @@ public class ExamModeActivity extends AppCompatActivity {
     }
 
     private void displayQuestion() {
-        if (selectedQuestions == null || selectedQuestions.isEmpty()) {
-            Toast.makeText(this, "Aucune question disponible", Toast.LENGTH_SHORT).show();
+        if (currentQuestionIndex >= selectedQuestions.size()) {
+            showFinalScore();
             return;
         }
 
         QuestionExam currentQuestion = selectedQuestions.get(currentQuestionIndex);
         questionText.setText(currentQuestion.getQuestionText());
-        optionsLayout.removeAllViews(); // Nettoyer les options précédentes
+        optionsLayout.removeAllViews();
 
-        // Ajouter les options comme boutons larges avec un fond blanc cassé
-        for (String option : currentQuestion.getOptions()) {
+        List<String> options = new ArrayList<>(Arrays.asList(currentQuestion.getOptions()));
+        Collections.shuffle(options);
+
+        for (String option : options) {
             Button optionButton = new Button(this);
             optionButton.setText(option);
-
-            // Appliquer un fond blanc cassé
-            optionButton.setBackgroundColor(getResources().getColor(R.color.off_white));
-            optionButton.setTextColor(getResources().getColor(android.R.color.black)); // Texte en noir
+            optionButton.setBackgroundColor(getResources().getColor(R.color.light_blue)); // Custom background color
+            optionButton.setTextColor(getResources().getColor(android.R.color.white)); // White text
             optionButton.setTextSize(18);
-            optionButton.setPadding(16, 16, 16, 16);
+            optionButton.setPadding(20, 20, 20, 20); // Increase padding for better spacing
+            optionButton.setAllCaps(false); // Optionally disable text all caps
 
-            // Ajouter un espacement entre les boutons
+            // Add rounded corners to the button
+            GradientDrawable drawable = new GradientDrawable();
+            drawable.setShape(GradientDrawable.RECTANGLE);
+            drawable.setCornerRadius(20);
+            drawable.setColor(getResources().getColor(R.color.light_blue)); // Set the background color
+            optionButton.setBackground(drawable);
+
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
             );
-            layoutParams.setMargins(0, 16, 0, 16); // Marges : haut et bas (16dp)
+            layoutParams.setMargins(0, 16, 0, 16);
             optionButton.setLayoutParams(layoutParams);
 
-            // Gérer le clic sur une option
-            optionButton.setOnClickListener(v -> checkAnswer(option, optionButton));
+            optionButton.setOnClickListener(v -> checkAnswer(option));
             optionsLayout.addView(optionButton);
         }
 
-        // Démarrer un compte à rebours pour cette question
         startTimer(questionTimeLimit);
     }
 
-    private void startTimer(int timeLimitInSeconds) {
-        final int finalTimeLimit = timeLimitInSeconds;
+    private void checkAnswer(final String selectedText) {
+        if (hasAnswered) return; // Prevent multiple answers
 
-        new android.os.CountDownTimer(finalTimeLimit * 1000, 1000) {
+        // Show confirmation dialog
+        new AlertDialog.Builder(this)
+                .setTitle("Confirmation")
+                .setMessage("Are you sure you want to select this answer?")
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    hasAnswered = true; // Mark as answered
+
+                    QuestionExam currentQuestion = selectedQuestions.get(currentQuestionIndex);
+                    disableOptionButtons();
+
+                    if (selectedText.equals(currentQuestion.getCorrectAnswer())) {
+                        correctAnswers++;
+                        // Attribuer les points selon la difficulté
+                        switch (currentQuestion.getCategory().toLowerCase()) {
+                            case "beginner":
+                                score += 1;
+                                break;
+                            case "intermediate":
+                                score += 3;
+                                break;
+                            case "advanced":
+                                score += 5;
+                                break;
+                        }
+                    }
+
+                    if (countDownTimer != null) {
+                        countDownTimer.cancel(); // Stop the timer when the user answers
+                    }
+
+                    new Handler().postDelayed(ExamModeActivity.this::moveToNextQuestion, 1000);
+                })
+                .setNegativeButton("No", (dialog, which) -> {
+                    dialog.cancel(); // Do nothing, just close the dialog
+                })
+                .show();
+    }
+
+    private void moveToNextQuestion() {
+        currentQuestionIndex++;
+        hasAnswered = false; // Reset the answered flag
+        displayQuestion();
+    }
+
+    private void showFinalScore() {
+        long timeTaken = (System.currentTimeMillis() - startTime) / 1000;
+
+        // Create a dialog to display the final score and a "Back to Home" button
+        new AlertDialog.Builder(this)
+                .setTitle("Quiz Finished")
+                .setMessage(String.format("Score final: %d\nQuestions totales: %d\nRéponses correctes: %d",
+                        score, selectedQuestions.size(), correctAnswers))
+                .setPositiveButton("Retour à l'accueil", (dialog, which) -> {
+                    Intent intent = new Intent(ExamModeActivity.this, HomeActivity.class);
+                    startActivity(intent);
+                    finish();
+                })
+                .show();
+
+        saveResultToDatabase("Exam", score, timeTaken, "General");
+    }
+
+    private void disableOptionButtons() {
+        for (int i = 0; i < optionsLayout.getChildCount(); i++) {
+            optionsLayout.getChildAt(i).setEnabled(false);
+        }
+    }
+
+    private void startTimer(int timeLimitInSeconds) {
+        countDownTimer = new CountDownTimer(timeLimitInSeconds * 1000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 timerText.setText("Temps restant : " + millisUntilFinished / 1000 + "s");
@@ -122,76 +191,15 @@ public class ExamModeActivity extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-                timerText.setText("Temps écoulé!");
-                moveToNextQuestion();
+                if (!hasAnswered) {
+                    moveToNextQuestion(); // Only move to the next question if the user hasn't answered yet
+                }
             }
         }.start();
-    }
-
-    private void checkAnswer(String selectedText, Button selectedButton) {
-        QuestionExam currentQuestion = selectedQuestions.get(currentQuestionIndex);
-
-        // Désactiver les boutons pendant que la réponse est vérifiée
-        disableOptionButtons();
-
-        // Vérification de la réponse
-        if (selectedText.equals(currentQuestion.getCorrectAnswer())) {
-            score += currentQuestion.getPoints(); // Ajouter les points selon la difficulté
-            correctAnswers++; // Incrémenter le nombre de réponses correctes
-            selectedButton.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark)); // Réponse correcte
-        } else {
-            selectedButton.setBackgroundColor(getResources().getColor(android.R.color.holo_red_dark)); // Réponse incorrecte
-        }
-
-        // Passer à la question suivante après un délai (5 secondes)
-        selectedButton.postDelayed(() -> {
-            moveToNextQuestion();
-        }, 5000); // Délai de 5 secondes avant de passer à la question suivante
-    }
-
-    private void moveToNextQuestion() {
-        if (currentQuestionIndex < selectedQuestions.size() - 1) {
-            currentQuestionIndex++;
-            displayQuestion();
-        } else {
-            showFinalScore();
-        }
-    }
-
-    private void showFinalScore() {
-        // Calculer le temps pris
-        long endTime = System.currentTimeMillis();
-        long timeTaken = (endTime - startTime) / 1000; // Temps en secondes
-
-        scoreText.setText("Score final: " + score + "\nNombre de questions: " + selectedQuestions.size() +
-                "\nRéponses correctes: " + correctAnswers);
-        scoreText.setVisibility(View.VISIBLE);
-
-        // Enregistrer le résultat dans la base de données
-        saveResultToDatabase("Exam", score, timeTaken, "General");
-
-        // Afficher un message
-        Toast.makeText(this, "Quiz terminé. Résultats enregistrés.", Toast.LENGTH_LONG).show();
     }
 
     private void saveResultToDatabase(String quizMode, int score, long timeTaken, String category) {
         QuizDatabaseHelper dbHelper = new QuizDatabaseHelper(this);
         dbHelper.saveQuizResult(quizMode, score, timeTaken, category);
-    }
-
-    private void disableOptionButtons() {
-        // Désactiver tous les boutons d'option
-        for (int i = 0; i < optionsLayout.getChildCount(); i++) {
-            Button button = (Button) optionsLayout.getChildAt(i);
-            button.setEnabled(false);
-        }
-    }
-
-    private void enableOptionButtons() {
-        // Réactiver tous les boutons d'option
-        for (int i = 0; i < optionsLayout.getChildCount(); i++) {
-            Button button = (Button) optionsLayout.getChildAt(i);
-            button.setEnabled(true);
-        }
     }
 }

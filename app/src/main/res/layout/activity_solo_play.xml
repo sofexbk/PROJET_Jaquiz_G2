@@ -90,4 +90,15 @@
                 android:fontFamily="sans-serif" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
+    <!-- Button de retour -->
+    <Button
+        android:id="@+id/butnBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Retour"
+        android:textColor="@android:color/white"
+        android:background="@color/primary_color"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp" />
 </RelativeLayout>

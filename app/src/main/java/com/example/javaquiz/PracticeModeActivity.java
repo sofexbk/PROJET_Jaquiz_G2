@@ -21,7 +21,6 @@ public class PracticeModeActivity extends AppCompatActivity {
 
     private TextView questionText, explanationText, scoreText;
     private LinearLayout optionsLayout;
-
     private List<Question> questions;
     private int currentQuestionIndex = 0;
     private int score = 0;
