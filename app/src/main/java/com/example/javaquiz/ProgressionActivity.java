@@ -4,7 +4,9 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,9 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProgressionActivity extends AppCompatActivity {
-
-    private TextView scoreText, bestScoreText, categoryProgressText;
     private QuizDatabaseHelper dbHelper;
+    private LinearLayout categoriesContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,70 +29,55 @@ public class ProgressionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_progression);
 
         dbHelper = new QuizDatabaseHelper(this);
+        categoriesContainer = findViewById(R.id.categoriesContainer);
 
-        // Charger les résultats du quiz
         loadUserStats();
 
-        // Configuration du bouton "Retour"
         Button btnBack = findViewById(R.id.btnBack);
         btnBack.setOnClickListener(v -> {
-            // Naviguer vers HomeActivity
             Intent intent = new Intent(ProgressionActivity.this, HomeActivity.class);
             startActivity(intent);
             finish();
         });
     }
+
+    @SuppressLint("Range")
     private void loadUserStats() {
-        Cursor cursor = dbHelper.getCategoryStats(); // Assurez-vous que cette méthode renvoie les résultats corrects
-        List<CategoryStats> categoryStatsList = new ArrayList<>();
+        Cursor cursor = dbHelper.getCategoryStatsForPracticeMode();
 
         if (cursor != null && cursor.moveToFirst()) {
-            do {
-                @SuppressLint("Range") String category = cursor.getString(cursor.getColumnIndex("category"));
-                @SuppressLint("Range") int bestScore = cursor.getInt(cursor.getColumnIndex("best_score"));
-                @SuppressLint("Range") int lastScore = cursor.getInt(cursor.getColumnIndex("last_score"));
+            // Beginner Section
+            addCategorySection("Beginner",
+                    cursor.getInt(cursor.getColumnIndex("beginner_last_score")),
+                    cursor.getInt(cursor.getColumnIndex("beginner_best_score")));
 
-                // Ajout des statistiques à la liste
-                categoryStatsList.add(new CategoryStats(category, lastScore, bestScore));
-            } while (cursor.moveToNext());
+            // Intermediate Section
+            addCategorySection("Intermediate",
+                    cursor.getInt(cursor.getColumnIndex("intermediate_last_score")),
+                    cursor.getInt(cursor.getColumnIndex("intermediate_best_score")));
+
+            // Advanced Section
+            addCategorySection("Advanced",
+                    cursor.getInt(cursor.getColumnIndex("advanced_last_score")),
+                    cursor.getInt(cursor.getColumnIndex("advanced_best_score")));
         }
 
-        // Configure le RecyclerView
-        RecyclerView recyclerView = findViewById(R.id.statisticsRecyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new CategoryStatsAdapter(categoryStatsList));
+        if (cursor != null) {
+            cursor.close();
+        }
     }
 
-//    private void loadUserStats() {
-//        Cursor cursor = dbHelper.getQuizResults();
-//        if (cursor != null && cursor.moveToFirst()) {
-//            int totalScore = 0;
-//            int bestScore = 0;
-//            int categoryCount = 0; // Compter le nombre de catégories
-//            int completedCategories = 0; // Nombre de catégories complétées
-//
-//            // Calculer le score total, le meilleur score et la progression par catégorie
-//            do {
-//                @SuppressLint("Range") int score = cursor.getInt(cursor.getColumnIndex("score"));
-//                @SuppressLint("Range") String category = cursor.getString(cursor.getColumnIndex("category"));
-//                totalScore += score;
-//                if (score > bestScore) {
-//                    bestScore = score;
-//                }
-//
-//                // Calculer les catégories complétées
-//                if (score > 0) {
-//                    completedCategories++;
-//                }
-//                categoryCount++;
-//            } while (cursor.moveToNext());
-//
-//            // Afficher les informations dans les TextView
-//            scoreText.setText("Total Score: " + totalScore);
-//            bestScoreText.setText("Best Score: " + bestScore);
-//            int progress = (int) ((completedCategories / (float) categoryCount) * 100);
-//            categoryProgressText.setText("Category Progress: " + progress + "%");
-//        }
-//    }
+    private void addCategorySection(String category, int lastScore, int bestScore) {
+        View sectionView = getLayoutInflater().inflate(R.layout.item_category_stats, categoriesContainer, false);
 
+        TextView categoryTitle = sectionView.findViewById(R.id.categoryTitle);
+        TextView lastScoreText = sectionView.findViewById(R.id.lastScoreText);
+        TextView bestScoreText = sectionView.findViewById(R.id.bestScoreText);
+
+        categoryTitle.setText(category);
+        lastScoreText.setText(String.format("Last Score: %d", lastScore));
+        bestScoreText.setText(String.format("Best Score: %d", bestScore));
+
+        categoriesContainer.addView(sectionView);
+    }
 }

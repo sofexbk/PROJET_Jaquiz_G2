@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.javaquiz.Models.CategoryStats;
 import com.example.javaquiz.R;
 
@@ -39,7 +38,6 @@ public class CategoryStatsAdapter extends RecyclerView.Adapter<CategoryStatsAdap
         holder.bestScoreText.setText("Best Score: " + stats.getBestScore());
     }
 
-
     @Override
     public int getItemCount() {
         return categoryStatsList.size();
@@ -50,7 +48,7 @@ public class CategoryStatsAdapter extends RecyclerView.Adapter<CategoryStatsAdap
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            categoryNameText = itemView.findViewById(R.id.categoryNameText);
+            categoryNameText = itemView.findViewById(R.id.categoryTitle);
             lastScoreText = itemView.findViewById(R.id.lastScoreText);
             bestScoreText = itemView.findViewById(R.id.bestScoreText);
         }

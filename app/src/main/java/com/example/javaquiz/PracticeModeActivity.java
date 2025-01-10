@@ -2,6 +2,7 @@ package com.example.javaquiz;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -157,7 +158,6 @@ public class PracticeModeActivity extends AppCompatActivity {
         }
     }
 
-
     private void showFinalScore() {
         // Calculer le temps pris
         long endTime = System.currentTimeMillis();
@@ -166,15 +166,29 @@ public class PracticeModeActivity extends AppCompatActivity {
         scoreText.setText("Score final: " + score);
         scoreText.setVisibility(View.VISIBLE);
 
-        // Enregistrer le résultat dans la base de données
-        saveResultToDatabase("Practice", score, timeTaken, "General");
+        // Récupérer le niveau sélectionné qui a été passé à l'activité
+        String selectedLevel = getIntent().getStringExtra("LEVEL");
+        if (selectedLevel == null) {
+            selectedLevel = "beginner"; // Valeur par défaut
+        }
 
-        // Afficher un message
-      //  Toast.makeText(this, "Résultats enregistrés dans la base de données", Toast.LENGTH_SHORT).show();
+        // Enregistrer le résultat dans la base de données avec la bonne catégorie
+        saveResultToDatabase("Practice", score, timeTaken, selectedLevel);
+
+        // Afficher un message de confirmation
+        Toast.makeText(this, "Score enregistré : " + score + " pour le niveau " + selectedLevel, Toast.LENGTH_SHORT).show();
     }
 
     private void saveResultToDatabase(String quizMode, int score, long timeTaken, String category) {
         QuizDatabaseHelper dbHelper = new QuizDatabaseHelper(this);
-        dbHelper.saveQuizResult(quizMode, score, timeTaken, category);
+        // Enregistrer et vérifier le résultat
+        long result = dbHelper.saveQuizResult(quizMode, score, timeTaken, category);
+
+        if (result != -1) {
+            // Log pour déboguer
+            Log.d("PracticeModeActivity", "Score saved successfully - Category: " + category + ", Score: " + score);
+        } else {
+            Log.e("PracticeModeActivity", "Error saving score for category: " + category);
+        }
     }
 }
