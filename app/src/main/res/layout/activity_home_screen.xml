@@ -11,13 +11,40 @@
         android:id="@+id/title_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Quiz Java"
+        android:text="Java Quiz App"
         android:textSize="32sp"
-        android:textStyle="bold"
         android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:shadowColor="#DDDDDD"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="2"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
         android:fontFamily="sans-serif-medium" />
+
+    <ImageView
+        android:id="@+id/center_image"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/java_white"
+        android:contentDescription="Centered Image"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/title_text"
+        android:layout_marginTop="50dp" />
+
+    <TextView
+        android:id="@+id/java"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Java"
+        android:textSize="32sp"
+        android:textStyle="normal"
+        android:textColor="#FFFFFF"
+        android:layout_below="@id/center_image"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="sans-serif-medium"
+        android:layout_marginBottom="25dp"/>
 
     <!-- Solo Play Card -->
     <androidx.cardview.widget.CardView
@@ -25,7 +52,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:layout_below="@id/title_text"
+        android:layout_below="@id/java"
         android:layout_marginTop="40dp"
         app:cardElevation="6dp"
         app:cardBackgroundColor="#ffffff"

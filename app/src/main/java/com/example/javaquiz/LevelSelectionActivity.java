@@ -44,13 +44,6 @@ public class LevelSelectionActivity extends AppCompatActivity {
         btnBeginner.setOnClickListener(levelClickListener);
         btnIntermediate.setOnClickListener(levelClickListener);
         btnAdvanced.setOnClickListener(levelClickListener);
-        // Configuration du bouton "Retour"
-        Button btnBack = findViewById(R.id.botnBack);
-        btnBack.setOnClickListener(v -> {
-            // Naviguer vers HomeActivity
-            Intent intent = new Intent(LevelSelectionActivity.this, HomeActivity.class);
-            startActivity(intent);
-            finish();
-        });
+
     }
 }

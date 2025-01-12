@@ -1,104 +1,102 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="16dp"
-    android:background="@drawable/home_background">
+    android:background="@drawable/home_background"
+    android:padding="16dp">
 
+    <!-- Title -->
     <TextView
         android:id="@+id/title_solo_play"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Jeu Solo"
-        android:textSize="24sp"
-        android:layout_marginTop="32dp"
-        android:layout_centerHorizontal="true"
-        android:textColor="#FFFFFF" />
+        android:textSize="28sp"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:shadowColor="#DDDDDD"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:fontFamily="sans-serif-medium"
+        android:layout_marginTop="32dp" />
 
+    <!-- Practice Mode Card -->
     <androidx.cardview.widget.CardView
         android:id="@+id/card_practice_mode"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:layout_below="@id/title_solo_play"
-        android:layout_marginTop="40dp"
         app:cardElevation="6dp"
-        app:cardBackgroundColor="#ffffff"
+        app:cardBackgroundColor="@android:color/transparent"
         app:cardCornerRadius="16dp"
-        android:radius="12dp"
+        app:layout_constraintWidth_percent="0.8"
+        app:layout_constraintTop_toBottomOf="@id/title_solo_play"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="50dp"
         android:foreground="?attr/selectableItemBackground">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-<!--            <ImageView-->
-<!--                android:layout_width="50dp"-->
-<!--                android:layout_height="50dp"-->
-<!--                android:src="@drawable/ic_solo_play"-->
-<!--                android:contentDescription="Solo Play Icon" />-->
+            android:layout_height="150dp"
+            android:background="@drawable/practice"
+            android:padding="16dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Practice Mode"
-                android:textSize="18sp"
-                android:textColor="#000000"
-                android:layout_marginStart="16dp"
-                android:fontFamily="sans-serif" />
-        </LinearLayout>
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="#222222"
+                android:shadowColor="#000000"
+                android:shadowDx="3"
+                android:shadowDy="3"
+                android:shadowRadius="7"
+                android:layout_centerInParent="true"
+                android:fontFamily="sans-serif-light" />
+        </RelativeLayout>
     </androidx.cardview.widget.CardView>
 
-
-
+    <!-- Exam Mode Card -->
     <androidx.cardview.widget.CardView
         android:id="@+id/card_exam_mode"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:layout_below="@id/card_practice_mode"
-        android:layout_marginTop="40dp"
         app:cardElevation="6dp"
-        app:cardBackgroundColor="#ffffff"
+        app:cardBackgroundColor="@android:color/transparent"
         app:cardCornerRadius="16dp"
-        android:radius="12dp"
+        app:layout_constraintWidth_percent="0.8"
+        app:layout_constraintTop_toBottomOf="@id/card_practice_mode"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="30dp"
         android:foreground="?attr/selectableItemBackground">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-<!--            <ImageView-->
-<!--                android:layout_width="50dp"-->
-<!--                android:layout_height="50dp"-->
-<!--                android:src="@drawable/ic_solo_play"-->
-<!--                android:contentDescription="Solo Play Icon" />-->
+            android:layout_height="150dp"
+            android:background="@drawable/exam"
+            android:padding="16dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Exam Mode"
-                android:textSize="18sp"
-                android:textColor="#000000"
-                android:layout_marginStart="16dp"
-                android:fontFamily="sans-serif" />
-        </LinearLayout>
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="#222222"
+                android:shadowColor="#000000"
+                android:shadowDx="3"
+                android:shadowDy="3"
+                android:shadowRadius="7"
+                android:layout_centerInParent="true"
+                android:fontFamily="sans-serif-light" />
+        </RelativeLayout>
     </androidx.cardview.widget.CardView>
-    <!-- Button de retour -->
-    <Button
-        android:id="@+id/butnBack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Retour"
-        android:textColor="@android:color/white"
-        android:background="@color/primary_color"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="16dp" />
-</RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

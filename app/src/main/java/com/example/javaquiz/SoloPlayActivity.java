@@ -26,14 +26,7 @@ public class SoloPlayActivity extends AppCompatActivity {
             startActivity(intent);
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         });
-        // Configuration du bouton "Retour"
-        Button btnBack = findViewById(R.id.butnBack);
-        btnBack.setOnClickListener(v -> {
-            // Naviguer vers HomeActivity
-            Intent intent = new Intent(SoloPlayActivity.this, HomeActivity.class);
-            startActivity(intent);
-            finish();
-        });
+
     }
 }
 
