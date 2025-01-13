@@ -1,27 +1,33 @@
 package com.example.javaquiz;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 import com.example.javaquiz.Models.Question;
 import com.example.javaquiz.Utils.JSONParser;
 import com.example.javaquiz.Utils.loadQuizData;
+
 import java.util.List;
 
 public class PracticeModeActivity extends AppCompatActivity {
 
-    private TextView questionText, explanationText;
+    private TextView questionText, explanationText, questionIndicator;
     private CardView explanationCard;
     private LinearLayout optionsLayout;
     private List<Question> questions;
     private int currentQuestionIndex = 0;
+    private int score = 0; // Track the score
+    private long startTime; // Track the start time
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +39,8 @@ public class PracticeModeActivity extends AppCompatActivity {
         explanationText = findViewById(R.id.explanationText);
         explanationCard = findViewById(R.id.explanationCard);
         optionsLayout = findViewById(R.id.optionsLayout);
-        Button btnReturnHome = findViewById(R.id.btnReturnHome);
+        questionIndicator = findViewById(R.id.questionIndicator);
+        startTime = SystemClock.elapsedRealtime(); // Start time
 
         // Load questions
         String level = getIntent().getStringExtra("LEVEL");
@@ -44,12 +51,6 @@ public class PracticeModeActivity extends AppCompatActivity {
 
         // Display the first question
         displayQuestion();
-
-        // Handle return to home
-        btnReturnHome.setOnClickListener(v -> {
-            startActivity(new Intent(this, HomeActivity.class));
-            finish();
-        });
     }
 
     private void displayQuestion() {
@@ -61,7 +62,6 @@ public class PracticeModeActivity extends AppCompatActivity {
         }
 
         // Update question indicator
-        TextView questionIndicator = findViewById(R.id.questionIndicator);
         questionIndicator.setText(String.format("Question %d/%d", currentQuestionIndex + 1, questions.size()));
 
         // Get the current question
@@ -73,7 +73,6 @@ public class PracticeModeActivity extends AppCompatActivity {
 
         // Dynamically create options as cards
         for (String option : currentQuestion.getOptions()) {
-            // CardView for option
             androidx.cardview.widget.CardView optionCard = new androidx.cardview.widget.CardView(this);
             optionCard.setCardElevation(6);
             optionCard.setRadius(16);
@@ -109,30 +108,60 @@ public class PracticeModeActivity extends AppCompatActivity {
         explanationCard.setVisibility(View.GONE);
     }
 
-
-
-    private void checkAnswer(String selectedOption, CardView selectedButton) {
+    private void checkAnswer(String selectedOption, CardView selectedCard) {
         Question currentQuestion = questions.get(currentQuestionIndex);
 
+        // Highlight correct or incorrect answer
         if (selectedOption.equals(currentQuestion.getAnswer())) {
-            selectedButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(android.R.color.holo_green_dark)));
+            selectedCard.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(android.R.color.holo_green_dark)));
+            score++; // Increment score
         } else {
-            selectedButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(android.R.color.holo_red_dark)));
+            selectedCard.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(android.R.color.holo_red_dark)));
+
+            // Highlight correct answer
+            for (int i = 0; i < optionsLayout.getChildCount(); i++) {
+                CardView card = (CardView) optionsLayout.getChildAt(i);
+                TextView optionText = (TextView) card.getChildAt(0);
+                if (optionText.getText().toString().equals(currentQuestion.getAnswer())) {
+                    card.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(android.R.color.holo_green_dark)));
+                }
+            }
         }
 
         explanationText.setText(currentQuestion.getExplanation());
         explanationCard.setVisibility(View.VISIBLE);
 
-        // Move to the next question after a delay
-        selectedButton.postDelayed(() -> {
+        // Delay and move to next question or finish quiz
+        selectedCard.postDelayed(() -> {
             if (currentQuestionIndex < questions.size() - 1) {
                 currentQuestionIndex++;
                 displayQuestion();
             } else {
-                // Quiz finished
-                questionText.setText("Quiz completed!");
-                optionsLayout.removeAllViews();
+                showFinalScore(); // Show score popup
             }
-        }, 3500); // Delay of 3 seconds
+        }, 3000);
+    }
+
+    private void showFinalScore() {
+        // Calculate elapsed time
+        long elapsedTime = (SystemClock.elapsedRealtime() - startTime) / 1000; // Seconds
+
+        // Show final score in a popup
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Quiz Completed!")
+                .setMessage(String.format("You scored %d/%d in %d seconds.", score, questions.size(), elapsedTime))
+                .setPositiveButton("Return to Home", (dialog, which) -> {
+                    Intent intent = new Intent(this, HomeActivity.class);
+                    startActivity(intent);
+                    finish();
+                })
+                .setNegativeButton("Restart Quiz", (dialog, which) -> {
+                    currentQuestionIndex = 0;
+                    score = 0;
+                    startTime = SystemClock.elapsedRealtime();
+                    displayQuestion();
+                })
+                .setCancelable(false)
+                .show();
     }
 }
