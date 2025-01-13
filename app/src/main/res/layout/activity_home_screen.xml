@@ -28,10 +28,11 @@
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:src="@drawable/java_white"
-        android:contentDescription="Centered Image"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/title_text"
-        android:layout_marginTop="50dp" />
+        android:layout_marginTop="50dp"
+        />
+
 
     <TextView
         android:id="@+id/java"
@@ -77,10 +78,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Jeu Solo"
-                android:textSize="18sp"
+                android:textSize="22sp"
                 android:textColor="#000000"
                 android:layout_marginStart="16dp"
-                android:fontFamily="sans-serif" />
+                android:fontFamily="sans-serif-medium" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
@@ -114,10 +115,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Multijoueur"
-                android:textSize="18sp"
+                android:textSize="22sp"
                 android:textColor="#000000"
                 android:layout_marginStart="16dp"
-                android:fontFamily="sans-serif" />
+                android:fontFamily="sans-serif-medium" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
@@ -151,10 +152,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Progression"
-                android:textSize="18sp"
+                android:textSize="22sp"
                 android:textColor="#000000"
                 android:layout_marginStart="16dp"
-                android:fontFamily="sans-serif" />
+                android:fontFamily="sans-serif-medium" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </RelativeLayout>

@@ -1,194 +1,138 @@
 package com.example.javaquiz;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import com.example.javaquiz.Models.Question;
 import com.example.javaquiz.Utils.JSONParser;
-import com.example.javaquiz.Utils.QuizDatabaseHelper;
 import com.example.javaquiz.Utils.loadQuizData;
-
 import java.util.List;
 
 public class PracticeModeActivity extends AppCompatActivity {
 
-    private TextView questionText, explanationText, scoreText;
+    private TextView questionText, explanationText;
+    private CardView explanationCard;
     private LinearLayout optionsLayout;
     private List<Question> questions;
     private int currentQuestionIndex = 0;
-    private int score = 0;
-    private long startTime; // Pour mesurer le temps total
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_practice_mode);
 
-        // Initialisation des vues
+        // Initialize views
         questionText = findViewById(R.id.questionText);
-        optionsLayout = findViewById(R.id.optionsLayout);
         explanationText = findViewById(R.id.explanationText);
-        scoreText = findViewById(R.id.scoreText);
+        explanationCard = findViewById(R.id.explanationCard);
+        optionsLayout = findViewById(R.id.optionsLayout);
+        Button btnReturnHome = findViewById(R.id.btnReturnHome);
 
-        // Masquer le score au début
-        scoreText.setVisibility(View.GONE);
-
-        // Charger les questions
-        String selectedLevel = getIntent().getStringExtra("LEVEL");
-        if (selectedLevel == null) {
-            selectedLevel = "beginner";
-        }
-
+        // Load questions
+        String level = getIntent().getStringExtra("LEVEL");
         String jsonString = loadQuizData.readJsonFromRaw(this, R.raw.data);
         if (jsonString != null) {
-            questions = JSONParser.parseQuestions(jsonString, selectedLevel);
+            questions = JSONParser.parseQuestions(jsonString, level);
         }
 
-        // Début du chronométrage
-        startTime = System.currentTimeMillis();
-
-        // Afficher la première question
+        // Display the first question
         displayQuestion();
 
-        // Gestion du bouton de retour à l'accueil
-        findViewById(R.id.btnReturnHome).setOnClickListener(v -> {
-            Intent intent = new Intent(PracticeModeActivity.this, HomeActivity.class);
-            startActivity(intent);
+        // Handle return to home
+        btnReturnHome.setOnClickListener(v -> {
+            startActivity(new Intent(this, HomeActivity.class));
             finish();
         });
     }
 
     private void displayQuestion() {
         if (questions == null || questions.isEmpty()) {
-            Toast.makeText(this, "Aucune question disponible", Toast.LENGTH_SHORT).show();
+            questionText.setText("No questions available.");
+            explanationCard.setVisibility(View.GONE);
+            optionsLayout.removeAllViews();
             return;
         }
 
+        // Update question indicator
+        TextView questionIndicator = findViewById(R.id.questionIndicator);
+        questionIndicator.setText(String.format("Question %d/%d", currentQuestionIndex + 1, questions.size()));
+
+        // Get the current question
         Question currentQuestion = questions.get(currentQuestionIndex);
         questionText.setText(currentQuestion.getQuestion());
-        optionsLayout.removeAllViews(); // Nettoyer les options précédentes
 
-        // Ajouter les options comme boutons larges avec un fond blanc cassé
+        // Clear previous options
+        optionsLayout.removeAllViews();
+
+        // Dynamically create options as cards
         for (String option : currentQuestion.getOptions()) {
-            Button optionButton = new Button(this);
-            optionButton.setText(option);
+            // CardView for option
+            androidx.cardview.widget.CardView optionCard = new androidx.cardview.widget.CardView(this);
+            optionCard.setCardElevation(6);
+            optionCard.setRadius(16);
+            optionCard.setUseCompatPadding(true);
+            optionCard.setCardBackgroundColor(getResources().getColor(android.R.color.white));
 
-            // Appliquer un fond blanc cassé
-            optionButton.setBackgroundColor(getResources().getColor(R.color.off_white));
-            optionButton.setTextColor(getResources().getColor(android.R.color.black)); // Texte en noir
-            optionButton.setTextSize(18);
-            optionButton.setPadding(16, 16, 16, 16);
+            // TextView for option text
+            TextView optionText = new TextView(this);
+            optionText.setText(option);
+            optionText.setTextSize(18);
+            optionText.setTextColor(getResources().getColor(android.R.color.black));
+            optionText.setPadding(32, 32, 32, 32);
 
-            // Ajouter un espacement entre les boutons
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+            // Add TextView to CardView
+            optionCard.addView(optionText);
+
+            // Add margins to CardView
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
             );
-            layoutParams.setMargins(0, 16, 0, 16); // Marges : haut et bas (16dp)
-            optionButton.setLayoutParams(layoutParams);
+            params.setMargins(0, 16, 0, 0);
+            optionCard.setLayoutParams(params);
 
-            // Gérer le clic sur une option
-            optionButton.setOnClickListener(v -> checkAnswer(option, optionButton));
-            optionsLayout.addView(optionButton);
+            // Handle option click
+            optionCard.setOnClickListener(v -> checkAnswer(option, optionCard));
+
+            // Add CardView to options layout
+            optionsLayout.addView(optionCard);
         }
 
-        explanationText.setVisibility(View.GONE);
+        // Hide explanation by default
+        explanationCard.setVisibility(View.GONE);
     }
 
-    private void checkAnswer(String selectedText, Button selectedButton) {
+
+
+    private void checkAnswer(String selectedOption, CardView selectedButton) {
         Question currentQuestion = questions.get(currentQuestionIndex);
 
-        // Désactiver les boutons pendant que l'explication est affichée
-        disableOptionButtons();
-
-        // Vérification de la réponse
-        if (selectedText.equals(currentQuestion.getAnswer())) {
-            score++;
-            selectedButton.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark)); // Réponse correcte
+        if (selectedOption.equals(currentQuestion.getAnswer())) {
+            selectedButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(android.R.color.holo_green_dark)));
         } else {
-            selectedButton.setBackgroundColor(getResources().getColor(android.R.color.holo_red_dark)); // Réponse incorrecte
-
-            // Identifier la bonne réponse
-            for (int i = 0; i < optionsLayout.getChildCount(); i++) {
-                Button button = (Button) optionsLayout.getChildAt(i);
-                if (button.getText().toString().equals(currentQuestion.getAnswer())) {
-                    button.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
-                }
-            }
+            selectedButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(android.R.color.holo_red_dark)));
         }
 
         explanationText.setText(currentQuestion.getExplanation());
-        explanationText.setVisibility(View.VISIBLE);
+        explanationCard.setVisibility(View.VISIBLE);
 
-        // Passer à la question suivante après un délai (5 secondes)
+        // Move to the next question after a delay
         selectedButton.postDelayed(() -> {
-            // Réactiver les boutons avant d'afficher la prochaine question
-            enableOptionButtons();
             if (currentQuestionIndex < questions.size() - 1) {
                 currentQuestionIndex++;
                 displayQuestion();
             } else {
-                Toast.makeText(this, "Quiz terminé", Toast.LENGTH_LONG).show();
-                showFinalScore();
+                // Quiz finished
+                questionText.setText("Quiz completed!");
+                optionsLayout.removeAllViews();
             }
-        }, 5000); // Délai de 5 secondes avant de passer à la question suivante
-    }
-
-    private void disableOptionButtons() {
-        // Désactiver tous les boutons d'option
-        for (int i = 0; i < optionsLayout.getChildCount(); i++) {
-            Button button = (Button) optionsLayout.getChildAt(i);
-            button.setEnabled(false);
-        }
-    }
-
-    private void enableOptionButtons() {
-        // Réactiver tous les boutons d'option
-        for (int i = 0; i < optionsLayout.getChildCount(); i++) {
-            Button button = (Button) optionsLayout.getChildAt(i);
-            button.setEnabled(true);
-        }
-    }
-
-    private void showFinalScore() {
-        // Calculer le temps pris
-        long endTime = System.currentTimeMillis();
-        long timeTaken = (endTime - startTime) / 1000; // Temps en secondes
-
-        scoreText.setText("Score final: " + score);
-        scoreText.setVisibility(View.VISIBLE);
-
-        // Récupérer le niveau sélectionné qui a été passé à l'activité
-        String selectedLevel = getIntent().getStringExtra("LEVEL");
-        if (selectedLevel == null) {
-            selectedLevel = "beginner"; // Valeur par défaut
-        }
-
-        // Enregistrer le résultat dans la base de données avec la bonne catégorie
-        saveResultToDatabase("Practice", score, timeTaken, selectedLevel);
-
-        // Afficher un message de confirmation
-        Toast.makeText(this, "Score enregistré : " + score + " pour le niveau " + selectedLevel, Toast.LENGTH_SHORT).show();
-    }
-
-    private void saveResultToDatabase(String quizMode, int score, long timeTaken, String category) {
-        QuizDatabaseHelper dbHelper = new QuizDatabaseHelper(this);
-        // Enregistrer et vérifier le résultat
-        long result = dbHelper.saveQuizResult(quizMode, score, timeTaken, category);
-
-        if (result != -1) {
-            // Log pour déboguer
-            Log.d("PracticeModeActivity", "Score saved successfully - Category: " + category + ", Score: " + score);
-        } else {
-            Log.e("PracticeModeActivity", "Error saving score for category: " + category);
-        }
+        }, 3500); // Delay of 3 seconds
     }
 }

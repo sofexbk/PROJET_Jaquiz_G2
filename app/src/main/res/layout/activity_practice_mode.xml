@@ -1,79 +1,108 @@
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/home_background"
-    tools:context=".PracticeModeActivity">
+    android:padding="16dp">
 
-    <LinearLayout
+    <!-- Title -->
+    <TextView
+        android:id="@+id/title_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Practice Mode"
+        android:textSize="32sp"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:shadowColor="#DDDDDD"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="2"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="16dp"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="sans-serif-medium" />
+
+    <!-- Question Indicator -->
+    <TextView
+        android:id="@+id/questionIndicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Question 1/14"
+        android:textSize="18sp"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:layout_below="@id/title_text"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="sans-serif-medium" />
+
+    <!-- Question Card -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/questionCard"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="16dp"
-        app:layout_constraintEnd_toEndOf="parent">
+        android:layout_height="wrap_content"
+        android:layout_below="@id/questionIndicator"
+        android:layout_marginTop="16dp"
+        android:layout_marginHorizontal="16dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="8dp">
 
         <TextView
             android:id="@+id/questionText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/question_background"
-            android:fontFamily="sans-serif-medium"
             android:padding="16dp"
             android:text="Question"
-            android:textColor="@color/primary_text"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:fontFamily="sans-serif-medium"
+            android:textColor="@color/primary_text" />
+    </androidx.cardview.widget.CardView>
 
-        <!-- Dynamic Options Layout -->
-        <LinearLayout
-            android:id="@+id/optionsLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="8dp" />
+    <!-- Options Layout -->
+    <LinearLayout
+        android:id="@+id/optionsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@id/questionCard"
+        android:layout_marginTop="16dp"
+        android:paddingHorizontal="16dp" />
 
-        <!-- Explanation Text -->
+    <!-- Explanation Card -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/explanationCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/optionsLayout"
+        android:layout_marginTop="16dp"
+        android:layout_marginHorizontal="16dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="4dp"
+        android:visibility="gone">
+
         <TextView
             android:id="@+id/explanationText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/explanation_background"
-            android:fontFamily="sans-serif-light"
             android:padding="16dp"
-            android:textColor="@color/explanation_text"
-            android:textSize="16sp"
-            android:visibility="gone" />
-
-        <!-- Score Display -->
-        <TextView
-            android:id="@+id/scoreText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="16dp"
-            android:text="Score: 0"
-            android:textColor="@color/primary_text"
+            android:text="Explanation"
             android:textSize="18sp"
-            android:visibility="gone" />
+            android:fontFamily="sans-serif-medium"
+            android:textColor="@color/explanation_text" />
+    </androidx.cardview.widget.CardView>
 
-    </LinearLayout>
-
-    <!-- Retour à l'Accueil Button -->
+    <!-- Back to Home Button -->
     <Button
         android:id="@+id/btnReturnHome"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
-        android:background="@color/primaryColor"
-        android:padding="8dp"
+        android:layout_margin="16dp"
+        android:layout_below="@id/explanationCard"
+        android:layout_centerHorizontal="true"
         android:text="Retour à l'Accueil"
-        android:textAlignment="center"
+        android:backgroundTint="@color/primaryColor"
         android:textColor="@android:color/white"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="MissingConstraints" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:fontFamily="sans-serif-medium" />
+</RelativeLayout>

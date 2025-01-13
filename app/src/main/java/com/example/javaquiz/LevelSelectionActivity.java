@@ -14,36 +14,28 @@ public class LevelSelectionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_level_selection);
 
-        Button btnBeginner = findViewById(R.id.btnBeginner);
-        Button btnIntermediate = findViewById(R.id.btnIntermediate);
-        Button btnAdvanced = findViewById(R.id.btnAdvanced);
+        findViewById(R.id.btnBeginner).setOnClickListener(v -> {
+            Intent intent = new Intent(LevelSelectionActivity.this, PracticeModeActivity.class);
+            String level = "beginner";
+            intent.putExtra("LEVEL", level);
+            startActivity(intent);
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        });
 
-        // Define the OnClickListener for all buttons
-        View.OnClickListener levelClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String level = "beginner"; // Default level
+        findViewById(R.id.btnIntermediate).setOnClickListener(v -> {
+            Intent intent = new Intent(LevelSelectionActivity.this, PracticeModeActivity.class);
+            String level = "intermediate";
+            intent.putExtra("LEVEL", level);
+            startActivity(intent);
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        });
 
-                // Use if-else logic to identify which button was clicked
-                if (view.getId() == R.id.btnIntermediate) {
-                    level = "intermediate";
-                } else if (view.getId() == R.id.btnAdvanced) {
-                    level = "advanced";
-                }
-
-                // Pass the selected level to PracticeModeActivity
-                Intent intent = new Intent(LevelSelectionActivity.this, PracticeModeActivity.class);
-                intent.putExtra("LEVEL", level);
-                startActivity(intent);
-                finish();  // Optional: Finish LevelSelectionActivity so user can't go back
-
-            }
-        };
-
-        // Set OnClickListener for the buttons
-        btnBeginner.setOnClickListener(levelClickListener);
-        btnIntermediate.setOnClickListener(levelClickListener);
-        btnAdvanced.setOnClickListener(levelClickListener);
-
+        findViewById(R.id.btnAdvanced).setOnClickListener(v -> {
+            Intent intent = new Intent(LevelSelectionActivity.this, PracticeModeActivity.class);
+            String level = "advanced";
+            intent.putExtra("LEVEL", level);
+            startActivity(intent);
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        });
     }
 }
