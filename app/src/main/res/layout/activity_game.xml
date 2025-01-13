@@ -1,67 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
+    android:animateLayoutChanges="true"
     android:background="@color/background_color">
 
-    <LinearLayout
+    <!-- En-tête avec numéro de tour et informations -->
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="8dp">
+        android:layout_marginBottom="12dp"
+        app:cardElevation="4dp"
+        app:cardCornerRadius="8dp"
+        app:cardBackgroundColor="@color/primary_color">
 
-        <TextView
-            android:id="@+id/tour_number_text"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textSize="16sp"
-            android:gravity="start"
-            android:textStyle="bold"
-            android:textColor="@color/text_primary"/>
+            android:orientation="horizontal"
+            android:padding="12dp">
 
-        <TextView
-            android:id="@+id/current_round_info"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textSize="16sp"
-            android:gravity="end"
-            android:textStyle="bold"
-            android:textColor="@color/text_primary"/>
-    </LinearLayout>
+            <TextView
+                android:id="@+id/tour_number_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="16sp"
+                android:gravity="start"
+                android:textStyle="bold"
+                android:textColor="@color/white" />
 
+            <TextView
+                android:id="@+id/current_round_info"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="16sp"
+                android:gravity="end"
+                android:textStyle="bold"
+                android:textColor="@color/white" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Texte pour indiquer le tour du joueur -->
     <TextView
         android:id="@+id/player_turn_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
+        android:textSize="22sp"
         android:textStyle="bold"
         android:gravity="center"
-        android:layout_marginBottom="16dp"
-        android:textColor="@color/accent_color"/>
+        android:layout_marginBottom="12dp"
+        android:textColor="@color/accent_color" />
 
+    <!-- Timer affiché dans une carte -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        app:cardElevation="4dp"
+        app:cardCornerRadius="8dp">
+
+        <TextView
+            android:id="@+id/timer_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:padding="16dp"
+            android:fontFamily="sans-serif-medium"
+            android:textColor="@color/text_primary" />
+    </androidx.cardview.widget.CardView>
+
+    <!-- Texte pour afficher le score -->
     <TextView
         android:id="@+id/score_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
+        android:textSize="18sp"
         android:gravity="center"
-        android:layout_marginBottom="24dp"
-        android:textColor="@color/text_secondary"/>
+        android:layout_marginBottom="12dp"
+        android:textColor="@color/text_secondary" />
 
-    <TextView
-        android:id="@+id/difficulty_text"
+    <!-- Carte pour afficher le niveau de difficulté -->
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:gravity="center"
         android:layout_marginBottom="16dp"
-        android:textColor="@color/accent_color"/>
+        app:cardElevation="2dp"
+        app:cardCornerRadius="8dp">
 
+        <TextView
+            android:id="@+id/difficulty_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:padding="12dp"
+            android:background="@color/off_white"
+            android:textColor="@color/accent_color" />
+    </androidx.cardview.widget.CardView>
+
+    <!-- ScrollView pour contenir la question et les boutons -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -72,61 +118,72 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/question_text"
+            <!-- Carte pour afficher la question -->
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:gravity="center"
-                android:layout_marginBottom="32dp"
-                android:minHeight="80dp"
-                android:textColor="@color/text_primary"/>
+                android:layout_marginBottom="24dp"
+                app:cardElevation="4dp"
+                app:cardCornerRadius="8dp">
 
+                <TextView
+                    android:id="@+id/question_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:gravity="center"
+                    android:padding="20dp"
+                    android:minHeight="80dp"
+                    android:background="@color/question_highlight"
+                    android:textColor="@color/text_primary" />
+            </androidx.cardview.widget.CardView>
+
+            <!-- Liste des boutons de réponse -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginTop="16dp">
+                android:layout_marginTop="8dp">
 
                 <Button
                     android:id="@+id/option1_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="12dp"
                     android:padding="16dp"
                     android:textSize="16sp"
-                    android:background="@drawable/button_bg"
-                    android:textColor="@color/button_text"/>
+                    android:background="@drawable/button_effects"
+                    android:textColor="@color/button_text" />
 
                 <Button
                     android:id="@+id/option2_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="12dp"
                     android:padding="16dp"
                     android:textSize="16sp"
-                    android:background="@drawable/button_bg"
-                    android:textColor="@color/button_text"/>
+                    android:background="@drawable/button_effects"
+                    android:textColor="@color/button_text" />
 
                 <Button
                     android:id="@+id/option3_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="12dp"
                     android:padding="16dp"
                     android:textSize="16sp"
-                    android:background="@drawable/button_bg"
-                    android:textColor="@color/button_text"/>
+                    android:background="@drawable/button_effects"
+                    android:textColor="@color/button_text" />
 
                 <Button
                     android:id="@+id/option4_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="12dp"
                     android:padding="16dp"
                     android:textSize="16sp"
-                    android:background="@drawable/button_bg"
-                    android:textColor="@color/button_text"/>
+                    android:background="@drawable/button_effects"
+                    android:textColor="@color/button_text" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
