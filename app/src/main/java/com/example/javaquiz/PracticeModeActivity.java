@@ -1,7 +1,6 @@
 package com.example.javaquiz;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
@@ -112,7 +111,8 @@ public class PracticeModeActivity extends AppCompatActivity {
 
     private void checkAnswer(String selectedOption, CardView selectedCard) {
         Question currentQuestion = questions.get(currentQuestionIndex);
-
+        // Désactiver les boutons pendant que l'explication est affichée
+        disableOptionButtons();
         // Highlight correct or incorrect answer
         if (selectedOption.equals(currentQuestion.getAnswer())) {
             selectedCard.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(android.R.color.holo_green_dark)));
@@ -135,6 +135,7 @@ public class PracticeModeActivity extends AppCompatActivity {
 
         // Delay and move to next question or finish quiz
         selectedCard.postDelayed(() -> {
+            enableOptionButtons();
             if (currentQuestionIndex < questions.size() - 1) {
                 currentQuestionIndex++;
                 displayQuestion();
@@ -182,6 +183,20 @@ public class PracticeModeActivity extends AppCompatActivity {
             Log.d("PracticeModeActivity", "Score saved successfully - Category: " + category + ", Score: " + score);
         } else {
             Log.e("PracticeModeActivity", "Error saving score for category: " + category);
+        }
+    }
+    private void disableOptionButtons() {
+        // Désactiver tous les boutons d'option
+        for (int i = 0; i < optionsLayout.getChildCount(); i++) {
+            CardView card = (CardView) optionsLayout.getChildAt(i);
+            card.setClickable(false);  // Disable clickability of the option cards
+        }
+    }
+    private void enableOptionButtons() {
+        // Réactiver tous les boutons d'option
+        for (int i = 0; i < optionsLayout.getChildCount(); i++) {
+            CardView card = (CardView) optionsLayout.getChildAt(i);
+            card.setClickable(true);  // Enable clickability of the option cards
         }
     }
 }
