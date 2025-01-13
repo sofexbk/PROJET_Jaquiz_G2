@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -15,6 +16,7 @@ import androidx.cardview.widget.CardView;
 
 import com.example.javaquiz.Models.Question;
 import com.example.javaquiz.Utils.JSONParser;
+import com.example.javaquiz.Utils.QuizDatabaseHelper;
 import com.example.javaquiz.Utils.loadQuizData;
 
 import java.util.List;
@@ -148,6 +150,11 @@ public class PracticeModeActivity extends AppCompatActivity {
 
         // Show final score in a popup
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        // Récupérer le niveau sélectionné qui a été passé à l'activité
+        String selectedLevel = getIntent().getStringExtra("LEVEL");
+        if (selectedLevel == null) {
+            selectedLevel = "beginner"; // Valeur par défaut
+        }
         builder.setTitle("Quiz Completed!")
                 .setMessage(String.format("You scored %d/%d in %d seconds.", score, questions.size(), elapsedTime))
                 .setPositiveButton("Return to Home", (dialog, which) -> {
@@ -163,5 +170,18 @@ public class PracticeModeActivity extends AppCompatActivity {
                 })
                 .setCancelable(false)
                 .show();
+        saveResultToDatabase("Practice", score, elapsedTime, selectedLevel);
+    }
+    private void saveResultToDatabase(String quizMode, int score, long timeTaken, String category) {
+        QuizDatabaseHelper dbHelper = new QuizDatabaseHelper(this);
+        // Enregistrer et vérifier le résultat
+        long result = dbHelper.saveQuizResult(quizMode, score, timeTaken, category);
+
+        if (result != -1) {
+            // Log pour déboguer
+            Log.d("PracticeModeActivity", "Score saved successfully - Category: " + category + ", Score: " + score);
+        } else {
+            Log.e("PracticeModeActivity", "Error saving score for category: " + category);
+        }
     }
 }

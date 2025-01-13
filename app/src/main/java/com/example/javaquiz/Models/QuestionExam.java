@@ -5,17 +5,12 @@ public class QuestionExam {
     private String[] options;
     private String correctAnswer;
     private String category;
-    private int points;
 
     public QuestionExam(String questionText, String[] options, String correctAnswer, String category) {
         this.questionText = questionText;
         this.options = options;
         this.correctAnswer = correctAnswer;
         this.category = category;
-    }
-
-    public int getPoints() {
-        return points;
     }
 
     public String getQuestionText() {

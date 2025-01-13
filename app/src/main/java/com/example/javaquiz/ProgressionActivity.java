@@ -33,12 +33,6 @@ public class ProgressionActivity extends AppCompatActivity {
 
         loadUserStats();
 
-        Button btnBack = findViewById(R.id.btnBack);
-        btnBack.setOnClickListener(v -> {
-            Intent intent = new Intent(ProgressionActivity.this, HomeActivity.class);
-            startActivity(intent);
-            finish();
-        });
     }
 
     @SuppressLint("Range")
