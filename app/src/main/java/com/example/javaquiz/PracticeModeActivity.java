@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -21,50 +22,56 @@ import com.example.javaquiz.Utils.loadQuizData;
 import java.util.List;
 
 /**
- * Cette activité gère le mode "Practice" du quiz, permettant à l'utilisateur de répondre
- * à des questions de quiz, de voir des explications et de suivre son score.
+ * Activité gérant le mode de pratique du quiz où les utilisateurs peuvent répondre aux questions.
+ * Suivi du score, du temps et affichage des explications pour chaque réponse.
  */
 public class PracticeModeActivity extends AppCompatActivity {
 
     private TextView questionText, explanationText, questionIndicator;
     private CardView explanationCard;
+    private Button btnReturnHome;
     private LinearLayout optionsLayout;
     private List<Question> questions;
     private int currentQuestionIndex = 0;
     private int score = 0; // Suivi du score
-    private long startTime; // Suivi du temps de début
+    private long startTime; // Suivi du temps de départ
 
+    /**
+     * Appelée lors de la création de l'activité.
+     * Initialise les vues et démarre le quiz en mode pratique.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_practice_mode);
 
         // Initialisation des vues
+        btnReturnHome = findViewById(R.id.btnReturnHome);
         questionText = findViewById(R.id.questionText);
         explanationText = findViewById(R.id.explanationText);
         explanationCard = findViewById(R.id.explanationCard);
         optionsLayout = findViewById(R.id.optionsLayout);
         questionIndicator = findViewById(R.id.questionIndicator);
-        startTime = SystemClock.elapsedRealtime(); // Temps de début du quiz
+        startTime = SystemClock.elapsedRealtime(); // Temps de départ
 
-        // Chargement des questions
+        // Chargement des questions en fonction du niveau sélectionné
         String level = getIntent().getStringExtra("LEVEL");
         String jsonString = loadQuizData.readJsonFromRaw(this, R.raw.data);
         if (jsonString != null) {
-            questions = JSONParser.parseQuestions(jsonString, level); // Parse les questions selon le niveau
+            questions = JSONParser.parseQuestions(jsonString, level);
         }
 
-        // Affichage de la première question
+        // Afficher la première question
         displayQuestion();
     }
 
     /**
-     * Affiche la question actuelle et ses options.
-     * Si toutes les questions ont été traitées, elle affichera un message de fin.
+     * Affiche la question actuelle et les options.
+     * Met à jour l'indicateur de question et crée dynamiquement des cartes d'options.
      */
     private void displayQuestion() {
         if (questions == null || questions.isEmpty()) {
-            questionText.setText("No questions available.");
+            questionText.setText("Aucune question disponible.");
             explanationCard.setVisibility(View.GONE);
             optionsLayout.removeAllViews();
             return;
@@ -77,28 +84,28 @@ public class PracticeModeActivity extends AppCompatActivity {
         Question currentQuestion = questions.get(currentQuestionIndex);
         questionText.setText(currentQuestion.getQuestion());
 
-        // Réinitialiser les options précédentes
+        // Suppression des anciennes options
         optionsLayout.removeAllViews();
 
         // Création dynamique des options sous forme de cartes
         for (String option : currentQuestion.getOptions()) {
-            CardView optionCard = new CardView(this);
+            androidx.cardview.widget.CardView optionCard = new androidx.cardview.widget.CardView(this);
             optionCard.setCardElevation(6);
             optionCard.setRadius(16);
             optionCard.setUseCompatPadding(true);
             optionCard.setCardBackgroundColor(getResources().getColor(android.R.color.white));
 
-            // Création du TextView pour l'option
+            // TextView pour le texte de l'option
             TextView optionText = new TextView(this);
             optionText.setText(option);
             optionText.setTextSize(18);
             optionText.setTextColor(getResources().getColor(android.R.color.black));
             optionText.setPadding(32, 32, 32, 32);
 
-            // Ajouter le TextView à la CardView
+            // Ajout de TextView à CardView
             optionCard.addView(optionText);
 
-            // Ajouter des marges à la CardView
+            // Ajout des marges à CardView
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
@@ -106,36 +113,38 @@ public class PracticeModeActivity extends AppCompatActivity {
             params.setMargins(0, 16, 0, 0);
             optionCard.setLayoutParams(params);
 
-            // Gérer le clic sur l'option
+            // Gestion du clic sur l'option
             optionCard.setOnClickListener(v -> checkAnswer(option, optionCard));
 
-            // Ajouter la CardView à la disposition des options
+            // Ajout de CardView à la disposition des options
             optionsLayout.addView(optionCard);
         }
 
-        // Cacher l'explication par défaut
+        // Masquer l'explication par défaut
         explanationCard.setVisibility(View.GONE);
     }
 
     /**
-     * Vérifie la réponse sélectionnée et met à jour le score et l'affichage.
-     * @param selectedOption L'option sélectionnée par l'utilisateur.
-     * @param selectedCard La CardView associée à l'option sélectionnée.
+     * Vérifie si l'option sélectionnée est correcte et met à jour l'interface utilisateur.
+     * Affiche également l'explication après la sélection de la réponse.
+     *
+     * @param selectedOption L'option sélectionnée par l'utilisateur
+     * @param selectedCard   La carte correspondant à l'option sélectionnée
      */
     private void checkAnswer(String selectedOption, CardView selectedCard) {
         Question currentQuestion = questions.get(currentQuestionIndex);
 
-        // Désactive les boutons d'option pendant que l'explication est affichée
+        // Désactiver les boutons d'option pendant l'affichage de l'explication
         disableOptionButtons();
 
-        // Vérifie si la réponse est correcte
+        // Mettre en surbrillance la réponse correcte ou incorrecte
         if (selectedOption.equals(currentQuestion.getAnswer())) {
             selectedCard.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(android.R.color.holo_green_dark)));
-            score++; // Incrémente le score
+            score++; // Incrémenter le score
         } else {
             selectedCard.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(android.R.color.holo_red_dark)));
 
-            // Met en surbrillance la réponse correcte
+            // Mettre en surbrillance la réponse correcte
             for (int i = 0; i < optionsLayout.getChildCount(); i++) {
                 CardView card = (CardView) optionsLayout.getChildAt(i);
                 TextView optionText = (TextView) card.getChildAt(0);
@@ -155,33 +164,32 @@ public class PracticeModeActivity extends AppCompatActivity {
                 currentQuestionIndex++;
                 displayQuestion();
             } else {
-                showFinalScore(); // Affiche le score final
+                showFinalScore(); // Afficher la popup du score
             }
         }, 3000);
     }
 
     /**
-     * Affiche un dialogue contenant le score final et le temps écoulé.
-     * Permet à l'utilisateur de retourner à l'écran principal ou de redémarrer le quiz.
+     * Affiche le score final après la fin du quiz.
      */
     private void showFinalScore() {
         // Calcul du temps écoulé
         long elapsedTime = (SystemClock.elapsedRealtime() - startTime) / 1000; // En secondes
 
-        // Affiche le score final dans une popup
+        // Afficher le score final dans une popup
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         String selectedLevel = getIntent().getStringExtra("LEVEL");
         if (selectedLevel == null) {
             selectedLevel = "beginner"; // Valeur par défaut
         }
-        builder.setTitle("Quiz Completed!")
-                .setMessage(String.format("You scored %d/%d in %d seconds.", score, questions.size(), elapsedTime))
-                .setPositiveButton("Return to Home", (dialog, which) -> {
+        builder.setTitle("Quiz terminé !")
+                .setMessage(String.format("Vous avez obtenu %d/%d en %d secondes.", score, questions.size(), elapsedTime))
+                .setPositiveButton("Retour à l'accueil", (dialog, which) -> {
                     Intent intent = new Intent(this, HomeActivity.class);
                     startActivity(intent);
                     finish();
                 })
-                .setNegativeButton("Restart Quiz", (dialog, which) -> {
+                .setNegativeButton("Recommencer le quiz", (dialog, which) -> {
                     currentQuestionIndex = 0;
                     score = 0;
                     startTime = SystemClock.elapsedRealtime();
@@ -189,46 +197,55 @@ public class PracticeModeActivity extends AppCompatActivity {
                 })
                 .setCancelable(false)
                 .show();
-
-        // Sauvegarde du résultat dans la base de données
         saveResultToDatabase("Practice", score, elapsedTime, selectedLevel);
     }
 
     /**
-     * Sauvegarde les résultats du quiz dans la base de données.
-     * @param quizMode Le mode du quiz ("Practice").
-     * @param score Le score obtenu dans le quiz.
-     * @param timeTaken Le temps pris pour compléter le quiz, en secondes.
-     * @param category La catégorie du quiz (par exemple, "beginner").
+     * Sauvegarde le résultat du quiz dans la base de données.
+     *
+     * @param quizMode   Le mode du quiz (par exemple, "Practice")
+     * @param score      Le score obtenu par l'utilisateur
+     * @param timeTaken  Le temps pris pour compléter le quiz
+     * @param category   La catégorie du quiz
      */
     private void saveResultToDatabase(String quizMode, int score, long timeTaken, String category) {
         QuizDatabaseHelper dbHelper = new QuizDatabaseHelper(this);
         long result = dbHelper.saveQuizResult(quizMode, score, timeTaken, category);
 
         if (result != -1) {
-            Log.d("PracticeModeActivity", "Score saved successfully - Category: " + category + ", Score: " + score);
+            // Log pour débogage
+            Log.d("PracticeModeActivity", "Score enregistré avec succès - Catégorie: " + category + ", Score: " + score);
         } else {
-            Log.e("PracticeModeActivity", "Error saving score for category: " + category);
+            Log.e("PracticeModeActivity", "Erreur lors de l'enregistrement du score pour la catégorie: " + category);
         }
     }
 
     /**
-     * Désactive les boutons d'option pour éviter de cliquer pendant l'affichage de l'explication.
+     * Désactive tous les boutons d'option (les CardViews).
      */
     private void disableOptionButtons() {
         for (int i = 0; i < optionsLayout.getChildCount(); i++) {
             CardView card = (CardView) optionsLayout.getChildAt(i);
-            card.setClickable(false); // Désactive la possibilité de cliquer sur les options
+            card.setClickable(false);  // Désactiver la cliquabilité des cartes d'option
         }
     }
 
     /**
-     * Réactive les boutons d'option après l'affichage de l'explication.
+     * Active tous les boutons d'option (les CardViews).
      */
     private void enableOptionButtons() {
         for (int i = 0; i < optionsLayout.getChildCount(); i++) {
             CardView card = (CardView) optionsLayout.getChildAt(i);
-            card.setClickable(true); // Réactive la possibilité de cliquer sur les options
+            card.setClickable(true);  // Réactiver la cliquabilité des cartes d'option
         }
+    }
+
+    /**
+     * Navigue vers l'écran d'accueil lorsque le bouton de retour est cliqué.
+     */
+    public void returnHome(View view) {
+        Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
+        finish();
     }
 }
