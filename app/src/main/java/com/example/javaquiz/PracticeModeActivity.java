@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -24,6 +25,7 @@ public class PracticeModeActivity extends AppCompatActivity {
 
     private TextView questionText, explanationText, questionIndicator;
     private CardView explanationCard;
+    private Button btnReturnHome;
     private LinearLayout optionsLayout;
     private List<Question> questions;
     private int currentQuestionIndex = 0;
@@ -36,6 +38,7 @@ public class PracticeModeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_practice_mode);
 
         // Initialize views
+        btnReturnHome = findViewById(R.id.btnReturnHome);
         questionText = findViewById(R.id.questionText);
         explanationText = findViewById(R.id.explanationText);
         explanationCard = findViewById(R.id.explanationCard);
@@ -198,5 +201,11 @@ public class PracticeModeActivity extends AppCompatActivity {
             CardView card = (CardView) optionsLayout.getChildAt(i);
             card.setClickable(true);  // Enable clickability of the option cards
         }
+    }
+
+    public void returnHome(View view) {
+        Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
+        finish();
     }
 }
