@@ -79,9 +79,8 @@ et
 
 ### 🕹️ Mode Examen
 1. Accédez à l'onglet **Mode Examen**.
-2. Choisissez un niveau de difficulté et commencez l'examen.
-3. Un chronomètre sera activé pour chaque question et vous devrez répondre dans un délai limité.
-4. À la fin de l'examen, vous recevrez un score et un feedback détaillé sur vos résultats.
+2. Un chronomètre sera activé pour chaque question et vous devrez répondre dans un délai limité.
+3. À la fin de l'examen, vous recevrez un score et un feedback détaillé sur vos résultats.
 
 ### 🎮 Mode Multijoueur Local
 1. Allez dans **Mode Multijoueur**.
