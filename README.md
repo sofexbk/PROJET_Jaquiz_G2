@@ -30,8 +30,7 @@ L'**Application de Quiz et d'Apprentissage du langage Java** est une application
 - **Mode Pratique** : Entraînez-vous sans pression, avec des indices disponibles.
 - **Mode Examen** : Testez vos connaissances dans un cadre plus sérieux avec une limite de temps.
 ![Mode Examen](https://github.com/sofexbk/PROJET_Jaquiz_G2/raw/main/app/Demo/9.jpg)
-et
-![Mode Pratique](https://github.com/sofexbk/PROJET_Jaquiz_G2/raw/main/app/Demo/6.jp =500x300g)
+![Mode Pratique](https://github.com/sofexbk/PROJET_Jaquiz_G2/raw/main/app/Demo/6.jp=500x300g)
 
 ### 📊 Statistiques de Progression
 - Suivez votre évolution avec des graphiques interactifs.
