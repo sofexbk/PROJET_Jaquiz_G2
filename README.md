@@ -12,7 +12,7 @@ L'**Application de Quiz et d'Apprentissage du langage Java** est une application
 - Plusieurs catégories disponibles pour divers niveaux de compétences : débutant, intermédiaire, avancé.
 - Les questions couvrent des concepts variés du langage Java.
 
-![Exemple de catégorie](https://github.com/sofexbk/PROJET_Jaquiz_G2/tree/main/app/Demo/3.jpg)
+![Exemple de catégorie](https://raw.githubusercontent.com/sofexbk/PROJET_Jaquiz_G2/main/app/Demo/3.jpg)
 
 ### 🎮 Mode Multijoueur Local
 - Jouez contre vos amis sur le même appareil.
