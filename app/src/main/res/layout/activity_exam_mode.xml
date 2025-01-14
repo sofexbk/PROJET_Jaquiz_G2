@@ -5,7 +5,7 @@
     android:background="@drawable/home_background"
     android:padding="16dp">
 
-    <!-- Question Indicator -->
+    <!-- Indicateur de question -->
     <TextView
         android:id="@+id/questionIndicator"
         android:layout_width="wrap_content"
@@ -17,7 +17,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 
-    <!-- Timer -->
+    <!-- Chronomètre -->
     <TextView
         android:id="@+id/timerText"
         android:layout_width="wrap_content"
@@ -29,6 +29,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="8dp" />
 
+    <!-- CardView pour la question -->
     <androidx.cardview.widget.CardView
         android:id="@+id/card_question"
         android:layout_width="match_parent"
@@ -42,6 +43,7 @@
         android:radius="12dp"
         android:foreground="?attr/selectableItemBackground">
 
+        <!-- Contenu de la CardView -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -49,6 +51,7 @@
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
+            <!-- Texte de la question -->
             <TextView
                 android:id="@+id/questionText"
                 android:layout_width="wrap_content"
@@ -61,7 +64,7 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <!-- Options Layout -->
+    <!-- Layout des options -->
     <LinearLayout
         android:id="@+id/optionsLayout"
         android:layout_width="match_parent"
@@ -70,7 +73,7 @@
         android:layout_below="@id/card_question"
         android:layout_marginTop="16dp" />
 
-    <!-- Confirm Button -->
+    <!-- Bouton de confirmation de réponse -->
     <Button
         android:id="@+id/confirmButton"
         android:layout_width="match_parent"
