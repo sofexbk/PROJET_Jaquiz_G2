@@ -12,31 +12,31 @@ L'**Application de Quiz et d'Apprentissage du langage Java** est une application
 - Plusieurs catégories disponibles pour divers niveaux de compétences : débutant, intermédiaire, avancé.
 - Les questions couvrent des concepts variés du langage Java.
 
-![Exemple de catégorie](https://github.com/sofexbk/PROJET_Jaquiz_G2/tree/main/app/Demo/3.png)
+![Exemple de catégorie](https://github.com/sofexbk/PROJET_Jaquiz_G2/tree/main/app/Demo/3.jpg)
 
 ### 🎮 Mode Multijoueur Local
 - Jouez contre vos amis sur le même appareil.
 - Suivi des scores et classement.
 
-![Exemple de mode multijoueur](https://github.com/sofexbk/PROJET_Jaquiz_G2/tree/main/app/Demo/11.png)
+![Exemple de mode multijoueur](https://github.com/sofexbk/PROJET_Jaquiz_G2/tree/main/app/Demo/11.jpg)
 
 ### 🏅 Système de Points et Classement
 - Gagnez des points pour chaque bonne réponse.
 - Consultez votre classement par rapport à d'autres utilisateurs dans le mode multijoueur.
 
-![Classement des joueurs](https://github.com/sofexbk/PROJET_Jaquiz_G2/tree/main/app/Demo/18.png)
+![Classement des joueurs](https://github.com/sofexbk/PROJET_Jaquiz_G2/tree/main/app/Demo/18.jpg)
 
 ### 🕹️ Mode Pratique et Mode Examen
 - **Mode Pratique** : Entraînez-vous sans pression, avec des indices disponibles.
 - **Mode Examen** : Testez vos connaissances dans un cadre plus sérieux avec une limite de temps.
-![Mode Examen](https://github.com/sofexbk/PROJET_Jaquiz_G2/tree/main/app/Demo/9.png)
----
-![Mode Pratique](https://github.com/sofexbk/PROJET_Jaquiz_G2/tree/main/app/Demo/6.png)
+![Mode Examen](https://github.com/sofexbk/PROJET_Jaquiz_G2/tree/main/app/Demo/9.jpg)
+et
+![Mode Pratique](https://github.com/sofexbk/PROJET_Jaquiz_G2/tree/main/app/Demo/6.jpg)
 
 ### 📊 Statistiques de Progression
 - Suivez votre évolution avec des graphiques interactifs.
 - Visualisez vos scores passés et vos progrès dans chaque catégorie.
-![Statistiques de progression](https://github.com/sofexbk/PROJET_Jaquiz_G2/tree/main/app/Demo/19.png)
+![Statistiques de progression](https://github.com/sofexbk/PROJET_Jaquiz_G2/tree/main/app/Demo/19.jpg)
 
 ---
 
