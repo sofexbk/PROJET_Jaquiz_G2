@@ -1,77 +1,83 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ExamModeActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/home_background"
+    android:padding="16dp">
 
-    <!-- TextView pour afficher la question -->
+    <!-- Question Indicator -->
     <TextView
-        android:id="@+id/questionText"
-        android:layout_width="0dp"
+        android:id="@+id/questionIndicator"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="Question"
+        android:text="Question 1/15"
         android:textSize="18sp"
-        android:textColor="@android:color/black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:padding="16dp"
-        android:gravity="center"/>
-
-    <!-- Layout pour les options -->
-    <LinearLayout
-        android:id="@+id/optionsLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:textColor="@android:color/white"
         android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/questionText"/>
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
 
-    <!-- TextView pour afficher le chronomètre -->
-
+    <!-- Timer -->
     <TextView
         android:id="@+id/timerText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="8dp"
-        android:text="Temps restant : 10s"
-        android:textColor="@android:color/black"
+        android:text="Time Left: 10s"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@id/optionsLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.437"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:textColor="@android:color/white"
+        android:layout_below="@id/questionIndicator"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp" />
 
-    <TextView
-        android:id="@+id/scoreText"
-        android:layout_width="wrap_content"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_question"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Score final: 0"
-        android:textSize="20sp"
-        android:textColor="@android:color/black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:visibility="gone"
-        android:gravity="center"/>
+        android:layout_margin="16dp"
+        android:layout_below="@id/timerText"
+        android:layout_marginTop="40dp"
+        app:cardElevation="6dp"
+        app:cardBackgroundColor="#ffffff"
+        app:cardCornerRadius="16dp"
+        android:radius="12dp"
+        android:foreground="?attr/selectableItemBackground">
 
-    <!-- Button pour retourner à l'accueil -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/questionText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Question"
+                android:textSize="22sp"
+                android:textColor="#000000"
+                android:layout_marginStart="16dp"
+                android:fontFamily="sans-serif-medium" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Options Layout -->
+    <LinearLayout
+        android:id="@+id/optionsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@id/card_question"
+        android:layout_marginTop="16dp" />
+
+    <!-- Confirm Button -->
     <Button
-        android:id="@+id/btnReturnHome"
-        android:layout_width="wrap_content"
+        android:id="@+id/confirmButton"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Retour à l'accueil"
-        android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:visibility="gone"/>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:text="Confirm Answer"
+        android:textColor="@android:color/white"
+        android:backgroundTint="@color/primaryColor"
+        android:layout_below="@id/optionsLayout"
+        android:layout_marginTop="16dp" />
+</RelativeLayout>

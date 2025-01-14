@@ -46,6 +46,7 @@
         android:layout_below="@id/questionIndicator"
         android:layout_marginTop="16dp"
         android:layout_marginHorizontal="16dp"
+        app:cardBackgroundColor="#ffffff"
         app:cardCornerRadius="16dp"
         app:cardElevation="8dp">
 
@@ -104,5 +105,6 @@
         android:text="Retour à l'Accueil"
         android:backgroundTint="@color/primaryColor"
         android:textColor="@android:color/white"
-        android:fontFamily="sans-serif-medium" />
+        android:fontFamily="sans-serif-medium"
+        android:onClick="returnHome"/>
 </RelativeLayout>

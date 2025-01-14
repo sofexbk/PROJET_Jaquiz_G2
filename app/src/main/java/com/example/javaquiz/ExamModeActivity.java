@@ -1,10 +1,11 @@
 package com.example.javaquiz;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -15,14 +16,16 @@ import com.example.javaquiz.Models.QuestionExam;
 import com.example.javaquiz.Utils.JSONParserExam;
 import com.example.javaquiz.Utils.QuizDatabaseHelper;
 import com.example.javaquiz.Utils.loadQuizData;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class ExamModeActivity extends AppCompatActivity {
-    private TextView questionText, scoreText, timerText;
+    private TextView questionText, timerText, questionIndicator;
     private LinearLayout optionsLayout;
+    private Button confirmButton;
     private List<QuestionExam> questions;
     private List<QuestionExam> selectedQuestions;
     private int currentQuestionIndex = 0;
@@ -31,19 +34,19 @@ public class ExamModeActivity extends AppCompatActivity {
     private long startTime;
     private int questionTimeLimit = 10;
     private CountDownTimer countDownTimer;
-    private boolean hasAnswered = false; // Track if the user has answered the current question
+    private String selectedOption = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exam_mode);
 
+        // Initialize views
         questionText = findViewById(R.id.questionText);
-        optionsLayout = findViewById(R.id.optionsLayout);
-        scoreText = findViewById(R.id.scoreText);
         timerText = findViewById(R.id.timerText);
-
-        scoreText.setVisibility(View.GONE);
+        questionIndicator = findViewById(R.id.questionIndicator);
+        optionsLayout = findViewById(R.id.optionsLayout);
+        confirmButton = findViewById(R.id.confirmButton);
 
         String jsonString = loadQuizData.readJsonFromRaw(this, R.raw.data);
         if (jsonString != null) {
@@ -61,10 +64,10 @@ public class ExamModeActivity extends AppCompatActivity {
         startTime = System.currentTimeMillis();
         displayQuestion();
 
-        findViewById(R.id.btnReturnHome).setOnClickListener(v -> {
-            Intent intent = new Intent(ExamModeActivity.this, HomeActivity.class);
-            startActivity(intent);
-            finish();
+        confirmButton.setOnClickListener(v -> {
+            if (selectedOption == null) return; // Do nothing if no option is selected
+            if (countDownTimer != null) countDownTimer.cancel(); // Stop the timer
+            checkAnswer(selectedOption);
         });
     }
 
@@ -76,123 +79,105 @@ public class ExamModeActivity extends AppCompatActivity {
 
         QuestionExam currentQuestion = selectedQuestions.get(currentQuestionIndex);
         questionText.setText(currentQuestion.getQuestionText());
+        questionIndicator.setText(String.format("Question %d/%d", currentQuestionIndex + 1, selectedQuestions.size()));
         optionsLayout.removeAllViews();
+        selectedOption = null; // Reset selected option
 
         List<String> options = new ArrayList<>(Arrays.asList(currentQuestion.getOptions()));
         Collections.shuffle(options);
 
         for (String option : options) {
-            Button optionButton = new Button(this);
-            optionButton.setText(option);
-            optionButton.setBackgroundColor(getResources().getColor(R.color.light_blue)); // Custom background color
-            optionButton.setTextColor(getResources().getColor(android.R.color.white)); // White text
-            optionButton.setTextSize(18);
-            optionButton.setPadding(20, 20, 20, 20); // Increase padding for better spacing
-            optionButton.setAllCaps(false); // Optionally disable text all caps
-
-            // Add rounded corners to the button
-            GradientDrawable drawable = new GradientDrawable();
-            drawable.setShape(GradientDrawable.RECTANGLE);
-            drawable.setCornerRadius(20);
-            drawable.setColor(getResources().getColor(R.color.light_blue)); // Set the background color
-            optionButton.setBackground(drawable);
-
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-            );
-            layoutParams.setMargins(0, 16, 0, 16);
-            optionButton.setLayoutParams(layoutParams);
-
-            optionButton.setOnClickListener(v -> checkAnswer(option));
-            optionsLayout.addView(optionButton);
+            View optionCard = createOptionCard(option);
+            optionsLayout.addView(optionCard);
         }
 
         startTimer(questionTimeLimit);
     }
 
-    private void checkAnswer(final String selectedText) {
-        if (hasAnswered) return; // Prevent multiple answers
+    private View createOptionCard(String option) {
+        // Create a CardView
+        androidx.cardview.widget.CardView optionCard = new androidx.cardview.widget.CardView(this);
+        optionCard.setCardElevation(6);
+        optionCard.setRadius(16);
+        optionCard.setUseCompatPadding(true);
+        optionCard.setCardBackgroundColor(getResources().getColor(android.R.color.white)); // Default color
 
-        // Show confirmation dialog
-        new AlertDialog.Builder(this)
-                .setTitle("Confirmation")
-                .setMessage("Are you sure you want to select this answer?")
-                .setPositiveButton("Yes", (dialog, which) -> {
-                    hasAnswered = true; // Mark as answered
+        // Create a TextView for the option text
+        TextView optionText = new TextView(this);
+        optionText.setText(option);
+        optionText.setTextSize(18);
+        optionText.setTextColor(getResources().getColor(android.R.color.black));
+        optionText.setPadding(32, 32, 32, 32);
 
-                    QuestionExam currentQuestion = selectedQuestions.get(currentQuestionIndex);
-                    disableOptionButtons();
+        // Add the TextView to the CardView
+        optionCard.addView(optionText);
 
-                    if (selectedText.equals(currentQuestion.getCorrectAnswer())) {
-                        correctAnswers++;
-                        // Attribuer les points selon la difficulté
-                        switch (currentQuestion.getCategory().toLowerCase()) {
-                            case "beginner":
-                                score += 1;
-                                break;
-                            case "intermediate":
-                                score += 3;
-                                break;
-                            case "advanced":
-                                score += 5;
-                                break;
-                        }
-                    }
+        // Set layout parameters for the CardView
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        params.setMargins(0, 16, 0, 16);
+        optionCard.setLayoutParams(params);
 
-                    if (countDownTimer != null) {
-                        countDownTimer.cancel(); // Stop the timer when the user answers
-                    }
+        // Set click listener to make the card selectable
+        optionCard.setOnClickListener(v -> {
+            // Deselect all options
+            for (int i = 0; i < optionsLayout.getChildCount(); i++) {
+                optionsLayout.getChildAt(i).setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(android.R.color.white)));
+            }
+            // Select the clicked card
+            optionCard.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#dfa61a")));
+            selectedOption = option; // Save the selected option
+        });
 
-                    new Handler().postDelayed(ExamModeActivity.this::moveToNextQuestion, 1000);
-                })
-                .setNegativeButton("No", (dialog, which) -> {
-                    dialog.cancel(); // Do nothing, just close the dialog
-                })
-                .show();
+        return optionCard;
     }
 
-    private void moveToNextQuestion() {
+
+    private void checkAnswer(String selectedText) {
+        QuestionExam currentQuestion = selectedQuestions.get(currentQuestionIndex);
+
+        if (selectedText.equals(currentQuestion.getCorrectAnswer())) {
+            correctAnswers++;
+            score += currentQuestion.getCategory().equalsIgnoreCase("beginner") ? 1
+                    : currentQuestion.getCategory().equalsIgnoreCase("intermediate") ? 3 : 5;
+        }
+
         currentQuestionIndex++;
-        hasAnswered = false; // Reset the answered flag
         displayQuestion();
     }
 
     private void showFinalScore() {
         long timeTaken = (System.currentTimeMillis() - startTime) / 1000;
-
-        // Create a dialog to display the final score and a "Back to Home" button
         new AlertDialog.Builder(this)
                 .setTitle("Quiz Finished")
-                .setMessage(String.format("Score final: %d\nQuestions totales: %d\nRéponses correctes: %d",
-                        score, selectedQuestions.size(), correctAnswers))
-                .setPositiveButton("Retour à l'accueil", (dialog, which) -> {
+                .setMessage(String.format("Final Score: %d\nCorrect Answers: %d/%d\nTime Taken: %d seconds",
+                        score, correctAnswers, selectedQuestions.size(), timeTaken))
+                .setPositiveButton("Return to Home", (dialog, which) -> {
                     Intent intent = new Intent(ExamModeActivity.this, HomeActivity.class);
                     startActivity(intent);
                     finish();
                 })
+                .setCancelable(false)
                 .show();
 
         saveResultToDatabase("Exam", score, timeTaken, "General");
-    }
-
-    private void disableOptionButtons() {
-        for (int i = 0; i < optionsLayout.getChildCount(); i++) {
-            optionsLayout.getChildAt(i).setEnabled(false);
-        }
     }
 
     private void startTimer(int timeLimitInSeconds) {
         countDownTimer = new CountDownTimer(timeLimitInSeconds * 1000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                timerText.setText("Temps restant : " + millisUntilFinished / 1000 + "s");
+                timerText.setText(String.format("Time Left: %ds", millisUntilFinished / 1000));
             }
 
             @Override
             public void onFinish() {
-                if (!hasAnswered) {
-                    moveToNextQuestion(); // Only move to the next question if the user hasn't answered yet
+                if (selectedOption != null) {
+                    checkAnswer(selectedOption);
+                } else {
+                    checkAnswer(""); // Pass empty if no option was selected
                 }
             }
         }.start();
